@@ -244,7 +244,7 @@ button{cursor:pointer;border:none;outline:none;}
     <div class="sec" style="margin-bottom:9px;">📡 Détection automatique</div>
     <div style="display:flex;gap:8px;margin-bottom:8px;">
       <button id="btn-gps" onclick="toggleGPS()" style="flex:1;padding:10px;border-radius:9px;background:rgba(91,164,230,.15);border:1.5px solid var(--blue);color:var(--blue);font-size:.8rem;font-weight:800;transition:all .3s;">📍 Activer le GPS</button>
-      <button onclick="simZone()" style="flex:1;padding:10px;border-radius:9px;background:rgba(240,192,64,.13);border:1.5px solid var(--gold);color:var(--gold);font-size:.78rem;font-weight:800;">⏩ Simuler zone</button>
+      <button onclick="simZone()" style="flex:1;padding:10px;border-radius:9px;background:rgba(240,192,64,.22);border:2px solid var(--gold);color:var(--gold);font-size:.82rem;font-weight:900;">⏩ Simuler zone</button>
     </div>
     <div id="gps-err" style="color:var(--err);font-size:.72rem;margin-top:7px;display:none;"></div>
     <div id="gps-ok-msg" style="color:var(--ok);font-size:.72rem;margin-top:7px;display:none;">✅ GPS actif — questions automatiques activées</div>
@@ -561,6 +561,7 @@ window.validateAndContinue=function(){
   screen('s-drive');
   renderRoute();
   scheduleJoker();
+  // Bonhomme qui dort uniquement ici (retour route après question)
   showSleepingGuy();
 };
 
@@ -679,7 +680,6 @@ function beginDriving(){
   document.getElementById('d-score').innerHTML=fmtScore(myScore);
   renderRoute();
   screen('s-drive');
-  showSleepingGuy();
   listenForQuestion();
   listenScores();
   scheduleJoker();
@@ -744,8 +744,14 @@ function stopGPS(){
 function showGPSErr(msg){const e=document.getElementById('gps-err');e.textContent=msg;e.style.display='block';}
 
 window.simZone=function(){
+  // Cache le bonhomme qui dort si visible
+  hideSleepingGuy();
   const next=DAYS[currentDay].zones.find(z=>!completedIds.has(z.id));
-  if(next)triggerZone(next);
+  if(next){
+    triggerZone(next);
+  } else {
+    toast('✅ Toutes les zones de ce jour sont complétées !');
+  }
 };
 
 // ─── ZONE TRIGGER ─────────────────────────────────────────────────────────────
