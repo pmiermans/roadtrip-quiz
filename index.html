@@ -21,7 +21,7 @@
   /* --- TEXTES -------------------------------------------------- */
   --theme-text:          #0d1f35;        /* texte principal                    */
   --theme-text-soft:     #2a4a6b;        /* texte secondaire                   */
-  --theme-text-muted:    #0d1f35;        /* texte discret / labels             */
+  --theme-text-muted:    #5a7a9a;        /* texte discret / labels             */
 
   /* --- TITRES (serif) ----------------------------------------- */
   --theme-title:         #0d1f35;        /* couleur des titres h1/h2           */
@@ -157,7 +157,7 @@ button { cursor:pointer; border:none; outline:none; }
 .pbar-fill { height:100%; border-radius:99px; transition:width .7s ease; }
 
 /* ── Labels & tags ── */
-.sec { font-size:1.1rem; color:var(--theme-text-muted); font-weight:800; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:10px; }
+.sec { font-size:1.4rem; color:var(--theme-text-muted); font-weight:900; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:12px; }
 .tag { display:inline-flex; align-items:center; gap:6px; background:var(--theme-card); border:1px solid var(--theme-border); border-radius:99px; padding:5px 14px; font-size:.72rem; font-weight:800; color:var(--theme-text-muted); text-transform:uppercase; letter-spacing:.8px; }
 
 /* ── Boutons réponse ── */
@@ -245,7 +245,7 @@ button { cursor:pointer; border:none; outline:none; }
   <div style="text-align:center;margin-bottom:24px;">
     <div style="font-size:52px;margin-bottom:8px;">🏔️</div>
     <h1 class="serif" style="font-size:1.85rem;color:#12243a;line-height:1.2;margin-bottom:6px;">Road Trip Quiz</h1>
-    <p style="color:var(--theme-text-muted);font-size:1.2rem;">Sprimont → Chambéry → La Rosière</p>
+    <p style="color:#000000;font-size:1.2rem;font-weight:700;">Sprimont → Chambéry → La Rosière</p>
   </div>
 
   <div class="sec">Votre véhicule</div>
@@ -305,8 +305,8 @@ button { cursor:pointer; border:none; outline:none; }
 <div class="content">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
     <div>
-      <div style="font-size:1rem;color:var(--theme-text-muted);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;" id="d-day-label">Jour 1</div>
-      <div class="serif" style="color:#12243a;font-size:1.3rem;" id="d-carname">🚙</div>
+      <div style="font-size:1.1rem;color:var(--theme-text-muted);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;" id="d-day-label">Jour 1</div>
+      <div class="serif" style="color:#12243a;font-size:1.5rem;font-weight:900;" id="d-carname">🚙</div>
     </div>
     <div style="display:flex;gap:7px;align-items:center;">
       <button onclick="openSB()" style="padding:7px 10px;border-radius:9px;background:rgba(240,192,64,.14);border:1px solid rgba(240,192,64,.35);color:var(--theme-primary);font-size:.78rem;font-weight:800;">🏆 Scores</button>
@@ -318,7 +318,7 @@ button { cursor:pointer; border:none; outline:none; }
   </div>
 
   <div class="pbar" style="height:6px;margin-bottom:4px;"><div id="d-prog" class="pbar-fill" style="height:6px;background:linear-gradient(90deg,var(--blue),var(--gold));width:0%;"></div></div>
-  <div style="display:flex;justify-content:space-between;font-size:1rem;color:var(--theme-text-muted);font-weight:800;margin-bottom:16px;">
+  <div style="display:flex;justify-content:space-between;font-size:1.3rem;color:var(--theme-text-muted);font-weight:800;margin-bottom:16px;">
     <span id="d-from">🟢 Sprimont</span><span id="d-zone-count">0/9</span><span id="d-to">⛰️ Chambéry</span>
   </div>
 
@@ -675,8 +675,17 @@ window.selectCar=function(id){
   myCar=CARS.find(c=>c.id===id);
   CARS.forEach(c=>{
     const b=document.getElementById('cb-'+c.id);
-    if(c.id===id){b.style.background=myCar.color+'28';b.style.borderColor=myCar.color;b.style.boxShadow=`0 0 14px ${myCar.color}44`;b.querySelector('span:last-child').style.color=myCar.color;}
-    else{b.style.background='var(--card)';b.style.borderColor='var(--theme-border)';b.style.boxShadow='none';b.querySelector('span:last-child').style.color='var(--theme-text-muted)';}
+    if(c.id===id){
+      b.style.background='#ffb3d9';
+      b.style.borderColor='#e91e8c';
+      b.style.boxShadow='0 0 14px rgba(233,30,140,0.4)';
+      b.querySelector('span:last-child').style.color='#8b0057';
+    } else {
+      b.style.background='var(--theme-card)';
+      b.style.borderColor='var(--theme-border)';
+      b.style.boxShadow='none';
+      b.querySelector('span:last-child').style.color='var(--theme-text-muted)';
+    }
   });
 };
 
@@ -778,16 +787,16 @@ function renderRoute(){
     const done=completedIds.has(z.id);
     const isNext=i===zones.findIndex(x=>!completedIds.has(x.id));
     return`<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:7px;">
-      <div style="display:flex;flex-direction:column;align-items:center;min-width:40px;">
-        <div style="width:38px;height:38px;border-radius:50%;background:${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--card)'};border:2px solid ${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--theme-border)'};display:flex;align-items:center;justify-content:center;font-size:${done?'1rem':'1.2rem'};color:${done||isNext?'var(--theme-bg-color)':'var(--theme-text-muted)'};font-weight:900;${isNext?'animation:pu 2s infinite':''};">
+      <div style="display:flex;flex-direction:column;align-items:center;min-width:48px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--card)'};border:2px solid ${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--theme-border)'};display:flex;align-items:center;justify-content:center;font-size:${done?'1.2rem':'1.5rem'};color:${done||isNext?'var(--theme-bg-color)':'var(--theme-text-muted)'};font-weight:900;${isNext?'animation:pu 2s infinite':''};">
           ${done?'✓':z.emoji}
         </div>
         ${i<zones.length-1?`<div style="width:2px;height:28px;background:${done?'rgba(82,199,122,.4)':'var(--theme-border)'};margin-top:2px;"></div>`:''}
       </div>
       <div style="padding-top:5px;opacity:${done?.6:isNext?1:.4};flex:1;display:flex;justify-content:space-between;">
         <div>
-          <div style="font-weight:800;font-size:.87rem;color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'var(--theme-text)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
-          <div style="font-size:.68rem;color:var(--theme-text-muted);">${z.theme}</div>
+          <div style="font-weight:800;font-size:1.4rem;color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'var(--theme-text)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
+          <div style="font-size:1.1rem;color:var(--theme-text-muted);font-weight:600;">${z.theme}</div>
         </div>
       </div>
     </div>`;
