@@ -68,6 +68,36 @@ button{cursor:pointer;border:none;outline:none;}
 
 .afu{animation:fu .45s ease both;}
 .app{animation:pp .35s ease both;}
+
+/* ── ANIMATIONS SPECTACULAIRES ── */
+@keyframes shake{0%,100%{transform:translateX(0)}10%{transform:translateX(-12px)}20%{transform:translateX(12px)}30%{transform:translateX(-10px)}40%{transform:translateX(10px)}50%{transform:translateX(-6px)}60%{transform:translateX(6px)}70%{transform:translateX(-3px)}80%{transform:translateX(3px)}90%{transform:translateX(-2px)}}
+@keyframes shake-screen{0%,100%{transform:translate(0,0)}15%{transform:translate(-8px,4px)}30%{transform:translate(8px,-4px)}45%{transform:translate(-6px,3px)}60%{transform:translate(6px,-3px)}75%{transform:translate(-3px,2px)}90%{transform:translate(3px,-2px)}}
+@keyframes confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes medal-drop{0%{transform:translateY(-60px) scale(0.3) rotate(-20deg);opacity:0}60%{transform:translateY(8px) scale(1.15) rotate(5deg);opacity:1}80%{transform:translateY(-4px) scale(0.95) rotate(-2deg)}100%{transform:translateY(0) scale(1) rotate(0);opacity:1}}
+@keyframes podium-rise{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+@keyframes firework-burst{0%{transform:scale(0);opacity:1}100%{transform:scale(1);opacity:0}}
+@keyframes firework-particle{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--fx),var(--fy)) scale(0);opacity:0}}
+@keyframes sleep-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes sleep-zzz{0%{transform:translate(0,0) scale(0.5);opacity:0}30%{opacity:1}100%{transform:translate(20px,-30px) scale(1.3);opacity:0}}
+@keyframes chambery-star{0%{transform:scale(0) rotate(0);opacity:0}50%{opacity:1}100%{transform:scale(1.8) rotate(360deg);opacity:0}}
+@keyframes winner-bounce{0%,100%{transform:translateY(0)}25%{transform:translateY(-18px)}50%{transform:translateY(0)}75%{transform:translateY(-9px)}}
+@keyframes flash-green{0%{background:var(--bg)}30%{background:rgba(82,199,122,.25)}100%{background:var(--bg)}}
+@keyframes flash-red{0%{background:var(--bg)}30%{background:rgba(232,84,84,.3)}100%{background:var(--bg)}}
+
+/* Confetti canvas overlay */
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9000;}
+
+/* Sleeping guy overlay */
+#sleep-overlay{position:fixed;inset:0;background:rgba(6,17,30,.88);z-index:700;display:none;flex-direction:column;align-items:center;justify-content:center;}
+#sleep-overlay.show{display:flex;}
+
+/* Fireworks canvas */
+#fireworks-canvas{position:fixed;inset:0;pointer-events:none;z-index:9000;}
+
+/* Chambéry overlay */
+#chambery-overlay{position:fixed;inset:0;background:rgba(6,17,30,.95);z-index:900;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+#chambery-overlay.show{display:flex;}
+
 </style>
 </head>
 <body>
@@ -78,6 +108,41 @@ button{cursor:pointer;border:none;outline:none;}
   <polygon points="0,100 40,40 100,70 170,30 250,65 310,35 380,55 400,45 400,100" fill="white" opacity=".5"/>
 </svg>
 <div id="toast"></div>
+
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- FIREWORKS CANVAS -->
+<canvas id="fireworks-canvas"></canvas>
+
+<!-- SLEEPING GUY OVERLAY -->
+<div id="sleep-overlay">
+  <div style="text-align:center;animation:sleep-bob 2s ease-in-out infinite;">
+    <div style="font-size:5rem;line-height:1;margin-bottom:10px;">😴</div>
+    <div style="position:relative;display:inline-block;">
+      <span style="position:absolute;font-size:1.4rem;top:-10px;left:20px;animation:sleep-zzz 1.5s ease-in-out infinite;">z</span>
+      <span style="position:absolute;font-size:1.8rem;top:-25px;left:35px;animation:sleep-zzz 1.5s ease-in-out .5s infinite;">z</span>
+      <span style="position:absolute;font-size:2.2rem;top:-45px;left:50px;animation:sleep-zzz 1.5s ease-in-out 1s infinite;">z</span>
+    </div>
+  </div>
+  <div style="margin-top:40px;color:var(--muted);font-size:.9rem;font-weight:700;">En route... prochaine question bientôt 🚗</div>
+  <div style="margin-top:8px;color:var(--border);font-size:.75rem;">Les questions Joker arrivent automatiquement</div>
+</div>
+
+<!-- CHAMBÉRY ARRIVAL OVERLAY -->
+<div id="chambery-overlay">
+  <div style="text-align:center;width:100%;max-width:380px;">
+    <div id="chambery-stars-container" style="position:relative;height:80px;margin-bottom:10px;"></div>
+    <div style="font-size:4rem;margin-bottom:10px;animation:winner-bounce 1s ease-in-out 3;">⛰️🌙</div>
+    <h2 class="serif" style="font-size:2rem;color:var(--gold);margin-bottom:8px;animation:fu .5s ease;">Chambéry !</h2>
+    <p style="color:var(--snow);font-size:1rem;font-weight:700;margin-bottom:6px;">Fin du Jour 1 — Bravo à tous ! 🎉</p>
+    <p style="color:var(--muted);font-size:.82rem;margin-bottom:24px;">À demain pour La Rosière 🎿</p>
+    <button class="btn btn-gold" onclick="closeChambereyOverlay()" style="font-size:1rem;">
+      🏨 Voir le classement Jour 1
+    </button>
+  </div>
+</div>
+
 
 <!-- SCOREBOARD OVERLAY -->
 <div id="sb-overlay">
@@ -492,10 +557,11 @@ window.validateAndContinue=function(){
   const allDone=zones.every(z=>completedIds.has(z.id));
   update(ref(db,`games/${gameId}`),{state:'driving',currentQuestion:null,answers:{}});
   answered=false;
-  if(allDone){currentDay===1?showDayEnd():showFinalEnd();return;}
+  if(allDone){currentDay===1?showChambereyOverlay():showFinalEndWithFireworks();return;}
   screen('s-drive');
   renderRoute();
   scheduleJoker();
+  showSleepingGuy();
 };
 
 // ─── STARS ───────────────────────────────────────────────────────────────────
@@ -613,6 +679,7 @@ function beginDriving(){
   document.getElementById('d-score').innerHTML=fmtScore(myScore);
   renderRoute();
   screen('s-drive');
+  showSleepingGuy();
   listenForQuestion();
   listenScores();
   scheduleJoker();
@@ -771,6 +838,7 @@ function showQuestion(q){
     startTimer(30,q);
   }
   document.getElementById('q-validate-btn').style.display='none';
+  hideSleepingGuy();
   screen('s-question');
   // Klaxon à l'arrivée de la question 📯
   setTimeout(playHorn, 300);
@@ -808,9 +876,9 @@ function submitAnswer(idx,q,timeout=false){
   const fb=document.getElementById('q-fb');
   fb.style.display='block';
   if(isVote){fb.style.color='var(--gold)';fb.textContent='💬 +5 pts — à discuter dans le groupe !';}
-  else if(timeout){fb.style.color='var(--err)';fb.textContent='⏰ Temps écoulé !';}
-  else if(correct){fb.style.color='var(--ok)';fb.textContent=`🎉 Bravo ! +${pts} pts${bonus?' (⚡ bonus rapidité !)':''}`;}
-  else{fb.style.color='var(--err)';fb.textContent=`❌ Raté ! Réponse : ${(q.opts||[])[q.ans??q.answer]||''}`;}
+  else if(timeout){fb.style.color='var(--err)';fb.textContent='⏰ Temps écoulé !';shakeScreen();}
+  else if(correct){fb.style.color='var(--ok)';fb.textContent=`🎉 Bravo ! +${pts} pts${bonus?' (⚡ bonus rapidité !)':''}`;setTimeout(launchConfetti,150);}
+  else{fb.style.color='var(--err)';fb.textContent=`❌ Raté ! Réponse : ${(q.opts||[])[q.ans??q.answer]||''}`;shakeScreen();}
   if(!isVote){
     (q.opts||[]).forEach((_,i)=>{
       const b=document.getElementById('ans-'+i);if(!b)return;
@@ -911,11 +979,16 @@ function showDayEnd(){
 function renderDayEnd(scores){
   const ranked=CARS.map(c=>({...c,total:scores[c.id]||0,nick:c.id===myCar.id?myNick:c.name})).sort((a,b)=>b.total-a.total);
   const leader=ranked[0];
-  document.getElementById('de-podium').innerHTML=`<div style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:4px;">${leader.emoji}</div><div style="font-size:.72rem;color:var(--muted);font-weight:800;letter-spacing:1px;margin-bottom:4px;">LEADER JOUR 1</div><div class="serif" style="font-size:1.3rem;color:var(--gold);">${leader.nick}</div><div style="font-size:2rem;font-weight:900;color:var(--gold);">${leader.total} <span style="font-size:.9rem;color:var(--muted);">pts</span></div></div>`;
+  renderAnimatedPodium(ranked, 'de-podium');
   document.getElementById('de-rank').innerHTML=ranked.map((p,i)=>`<div class="player-row"><div style="display:flex;align-items:center;gap:9px;"><div class="rank-medal" style="background:${['rgba(255,215,0,.2)','rgba(192,192,192,.2)','rgba(205,127,50,.2)','rgba(106,141,176,.15)'][i]};color:${['#ffd700','#c0c0c0','#cd7f32','var(--muted)'][i]};">${MEDALS[i]}</div><span>${p.emoji}</span><span style="font-weight:800;${p.id===myCar.id?'color:var(--gold)':''}">${p.nick}</span></div><span style="font-weight:900;color:${i===0?'var(--gold)':'var(--snow)'};">${p.total}<span style="font-size:.7rem;color:var(--muted);"> pts</span></span></div>`).join('');
   screen('s-dayend');
 }
 
+function showFinalEndWithFireworks(){
+  screen('s-end');
+  launchFireworks(6000);
+  get(ref(db,`games/${gameId}/scores`)).then(snap=>renderFinalEnd(snap.val()||{}));
+}
 function showFinalEnd(){
   get(ref(db,`games/${gameId}/scores`)).then(snap=>renderFinalEnd(snap.val()||{}));
 }
@@ -923,7 +996,8 @@ function renderFinalEnd(scores){
   const ranked=CARS.map(c=>({...c,total:scores[c.id]||0,nick:c.id===myCar.id?myNick:c.name})).sort((a,b)=>b.total-a.total);
   const leader=ranked[0];
   const grade=leader.total>=150?'🏆 Génie absolu du road trip !':leader.total>=100?'⛷️ Champion du quiz alpin !':leader.total>=60?'🎿 Excellent voyageur !':'☃️ On repart l\'an prochain !';
-  document.getElementById('end-podium').innerHTML=`<div style="text-align:center;"><div style="font-size:2.8rem;margin-bottom:6px;">${leader.emoji}🏆</div><div style="font-size:.7rem;color:var(--muted);font-weight:800;letter-spacing:1px;margin-bottom:4px;">GRAND VAINQUEUR</div><div class="serif" style="font-size:1.4rem;color:var(--gold);margin-bottom:4px;">${leader.nick}</div><div style="font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;">${leader.total}</div><div style="font-size:.82rem;color:var(--muted);margin-bottom:6px;">points totaux</div><div style="color:var(--snow);font-weight:700;">${grade}</div></div>`;
+  renderAnimatedPodium(ranked, 'end-podium');
+  document.getElementById('end-podium').innerHTML+=`<div style="text-align:center;margin-top:10px;"><div style="color:var(--snow);font-weight:700;font-size:.95rem;animation:fu .5s 1.5s ease both;">${grade}</div></div>`;
   document.getElementById('end-rank').innerHTML=ranked.map((p,i)=>`<div class="player-row"><div style="display:flex;align-items:center;gap:9px;"><div class="rank-medal" style="background:${['rgba(255,215,0,.2)','rgba(192,192,192,.2)','rgba(205,127,50,.2)','rgba(106,141,176,.15)'][i]};color:${['#ffd700','#c0c0c0','#cd7f32','var(--muted)'][i]};">${MEDALS[i]}</div><span>${p.emoji}</span><span style="font-weight:800;${p.id===myCar.id?'color:var(--gold)':''}">${p.nick}</span></div><span style="font-weight:900;color:${i===0?'var(--gold)':'var(--snow)'};">${p.total}<span style="font-size:.7rem;color:var(--muted);"> pts</span></span></div>`).join('');
   screen('s-end');
 }
@@ -951,6 +1025,178 @@ window.openSB=function(){
   });
 };
 window.closeSB=function(){document.getElementById('sb-overlay').classList.remove('open');};
+
+
+// ═══════════════════════════════════════════════════════════
+// ANIMATIONS SPECTACULAIRES
+// ═══════════════════════════════════════════════════════════
+
+// ── CONFETTI ──────────────────────────────────────────────
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const colors=['#f0c040','#52c77a','#5ba4e6','#e85454','#a78bfa','#ff8c42','#fff'];
+  const pieces=[];
+  for(let i=0;i<180;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:-20-Math.random()*200,
+      w:8+Math.random()*10,
+      h:5+Math.random()*8,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      rot:Math.random()*360,
+      rotSpeed:(Math.random()-0.5)*8,
+      vy:4+Math.random()*6,
+      vx:(Math.random()-0.5)*4,
+      alpha:1,
+    });
+  }
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.y+=p.vy; p.x+=p.vx; p.rot+=p.rotSpeed;
+      if(frame>90)p.alpha=Math.max(0,p.alpha-0.015);
+      ctx.save();
+      ctx.globalAlpha=p.alpha;
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    frame++;
+    if(frame<160) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+  // Flash vert
+  document.body.style.animation='flash-green .6s ease';
+  setTimeout(()=>document.body.style.animation='',600);
+}
+
+// ── SCREEN SHAKE ─────────────────────────────────────────
+function shakeScreen(){
+  const active=document.querySelector('.screen.active');
+  if(active){
+    active.style.animation='shake-screen .6s ease';
+    setTimeout(()=>active.style.animation='',650);
+  }
+  document.body.style.animation='flash-red .5s ease';
+  setTimeout(()=>document.body.style.animation='',500);
+}
+
+// ── FIREWORKS ────────────────────────────────────────────
+function launchFireworks(duration=5000){
+  const canvas=document.getElementById('fireworks-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const particles=[];
+  function explode(x,y){
+    const colors=['#f0c040','#52c77a','#5ba4e6','#e85454','#a78bfa','#ff8c42','#fff','#ff69b4'];
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    for(let i=0;i<60;i++){
+      const angle=(i/60)*Math.PI*2;
+      const speed=2+Math.random()*5;
+      particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,col,alpha:1,size:2+Math.random()*3,trail:[]});
+    }
+  }
+  let launchTimer=setInterval(()=>{
+    const x=100+Math.random()*(canvas.width-200);
+    const y=50+Math.random()*(canvas.height/2);
+    explode(x,y);
+  },400);
+  setTimeout(()=>clearInterval(launchTimer),duration-500);
+  function draw(){
+    ctx.fillStyle='rgba(6,17,30,0.18)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,i)=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.08;
+      p.vx*=0.98; p.vy*=0.98;
+      p.alpha-=0.015;
+      if(p.alpha<=0){particles.splice(i,1);return;}
+      ctx.save();
+      ctx.globalAlpha=p.alpha;
+      ctx.fillStyle=p.col;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    });
+    if(Date.now()<endTime) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  const endTime=Date.now()+duration;
+  // Initial burst
+  for(let i=0;i<5;i++) setTimeout(()=>explode(100+Math.random()*(canvas.width-200), 80+Math.random()*200), i*120);
+  draw();
+}
+
+// ── SLEEPING GUY ─────────────────────────────────────────
+let sleepTimeout=null;
+function showSleepingGuy(){
+  clearTimeout(sleepTimeout);
+  document.getElementById('sleep-overlay').classList.add('show');
+}
+function hideSleepingGuy(){
+  document.getElementById('sleep-overlay').classList.remove('show');
+}
+
+// ── CHAMBÉRY OVERLAY ─────────────────────────────────────
+function showChambereyOverlay(){
+  // Étoiles animées
+  const container=document.getElementById('chambery-stars-container');
+  container.innerHTML='';
+  for(let i=0;i<12;i++){
+    const star=document.createElement('div');
+    star.textContent='⭐';
+    star.style.cssText=`position:absolute;font-size:${1.5+Math.random()}rem;left:${Math.random()*90}%;top:${Math.random()*80}%;animation:chambery-star ${1+Math.random()}s ease-out ${i*0.15}s both;`;
+    container.appendChild(star);
+  }
+  document.getElementById('chambery-overlay').classList.add('show');
+}
+window.closeChambereyOverlay=function(){
+  document.getElementById('chambery-overlay').classList.remove('show');
+  showDayEnd();
+};
+
+// ── ANIMATED PODIUM RENDER ────────────────────────────────
+function renderAnimatedPodium(ranked, containerId){
+  const el=document.getElementById(containerId);
+  // Top 3 podium visuel
+  const order=[1,0,2]; // silver, gold, bronze display order
+  const heights=['55px','80px','42px'];
+  const delays=['0.4s','0.1s','0.7s'];
+  const bgColors=['rgba(192,192,192,.25)','rgba(255,215,0,.25)','rgba(205,127,50,.25)'];
+  const borderColors=['#c0c0c0','#ffd700','#cd7f32'];
+  
+  let podiumHTML = `<div style="display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:16px;height:130px;">`;
+  order.forEach((rank,pos)=>{
+    const p=ranked[rank];
+    if(!p)return;
+    podiumHTML+=`
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;animation:medal-drop .6s cubic-bezier(.34,1.56,.64,1) ${delays[pos]} both;">
+        <div style="font-size:${pos===1?'2.5rem':'1.8rem'};animation:${pos===1?'winner-bounce 1s ease .8s 3':'none'}">${p.emoji}</div>
+        <div style="font-size:.72rem;font-weight:800;color:${borderColors[rank]};max-width:70px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nick}</div>
+        <div style="width:${pos===1?'90px':'72px'};height:${heights[pos]};background:${bgColors[rank]};border:2px solid ${borderColors[rank]};border-radius:8px 8px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:podium-rise .5s ease ${delays[pos]} both;">
+          <div style="font-size:1.4rem;">${MEDALS[rank]}</div>
+          <div style="font-size:.82rem;font-weight:900;color:${borderColors[rank]};">${p.total}</div>
+        </div>
+      </div>`;
+  });
+  podiumHTML+=`</div>`;
+  
+  // 4th place
+  if(ranked[3]){
+    podiumHTML+=`<div style="text-align:center;font-size:.8rem;color:var(--muted);animation:fu .5s 1.2s ease both;">
+      4️⃣ ${ranked[3].nick} — ${ranked[3].total} pts
+    </div>`;
+  }
+  el.innerHTML=podiumHTML;
+}
 
 </script>
 </body>
