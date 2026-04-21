@@ -151,7 +151,7 @@ button{cursor:pointer;border:none;outline:none;}
 
   <input id="i-nick" placeholder="✏️ Surnom de votre équipe (optionnel)" style="width:100%;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--snow);font-size:.9rem;margin-bottom:14px;"/>
 
-  <div class="sec">Code de partie (identique pour les 4 voitures)</div>
+  <div class="sec">Code de partie (identique pour les 4 équipes)</div>
   <div style="display:flex;gap:8px;margin-bottom:16px;">
     <input id="i-gid" placeholder="ex: SKI2025" maxlength="8" oninput="this.value=this.value.toUpperCase()" style="flex:1;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--snow);font-size:1.1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;"/>
     <button onclick="genId()" style="padding:0 14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--muted);font-size:.8rem;font-weight:800;">🎲</button>
@@ -159,7 +159,7 @@ button{cursor:pointer;border:none;outline:none;}
 
   <div class="card" style="margin-bottom:18px;font-size:.78rem;color:var(--muted);line-height:1.7;">
     <strong style="color:var(--blue);">ℹ️ Comment ça marche ?</strong><br/>
-    Chaque co-pilote active le GPS → les questions se déclenchent <strong style="color:var(--snow);">automatiquement</strong> à l'approche de chaque ville, pour <strong style="color:var(--snow);">tout le monde en même temps</strong>. Les questions Joker tombent seules de façon aléatoire. Posez le téléphone, c'est tout ! 🎉
+    Chaque co-pilote active le GPS → les questions se déclenchent <strong style="color:var(--snow);">automatiquement</strong> à l'approche de chaque ville, pour <strong style="color:var(--snow);">toutes les équipes en même temps</strong>. Les questions Joker tombent seules de façon aléatoire. Posez le téléphone, c'est tout ! 🎉
   </div>
 
   <button class="btn btn-gold" onclick="joinGame()">🚦 Rejoindre la partie</button>
@@ -467,10 +467,10 @@ const JOKERS = [
 ];
 
 const CARS=[
-  {id:"car1",name:"Voiture 1",emoji:"🚙",color:"#5ba4e6"},
-  {id:"car2",name:"Voiture 2",emoji:"🚗",color:"#f0c040"},
-  {id:"car3",name:"Voiture 3",emoji:"🚕",color:"#e85454"},
-  {id:"car4",name:"Voiture 4",emoji:"🚐",color:"#52c77a"},
+  {id:"car1",name:"Team 1",emoji:"🚙",color:"#5ba4e6"},
+  {id:"car2",name:"Team 2",emoji:"🚗",color:"#f0c040"},
+  {id:"car3",name:"Team 3",emoji:"🚕",color:"#e85454"},
+  {id:"car4",name:"Team 4",emoji:"🚐",color:"#52c77a"},
 ];
 const DIFF_LBL=["","⭐ Facile","⭐⭐ Moyen","⭐⭐⭐ Difficile"];
 const DIFF_COL=["","var(--ok)","var(--gold)","var(--err)"];
@@ -557,6 +557,7 @@ window.validateAndContinue=function(){
 // ─── CAR GRID ─────────────────────────────────────────────────────────────────
 (()=>{
   const g=document.getElementById('car-grid');
+  g.innerHTML=''; // évite les doublons si exécuté 2x
   CARS.forEach(c=>{
     const b=document.createElement('button');
     b.id='cb-'+c.id;
