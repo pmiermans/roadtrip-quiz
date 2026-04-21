@@ -216,11 +216,17 @@ button{cursor:pointer;border:none;outline:none;}
 
   <div id="q-vote-hint" style="display:none;background:rgba(240,192,64,.11);border:1px solid rgba(240,192,64,.38);border-radius:11px;padding:11px 13px;color:var(--gold);font-size:.86rem;margin-bottom:12px;text-align:center;"></div>
   <div id="q-opts" style="display:flex;flex-direction:column;gap:9px;margin-bottom:12px;"></div>
-  <div id="q-fb" style="display:none;text-align:center;font-weight:800;font-size:1rem;margin-bottom:10px;animation:fu .3s ease;"></div>
+  <div id="q-fb" style="display:none;text-align:center;font-weight:800;font-size:1rem;margin-bottom:12px;animation:fu .3s ease;"></div>
 
-  <div style="margin-top:6px;">
+  <div style="margin-top:6px;margin-bottom:14px;">
     <div style="font-size:.66rem;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;">👀 Qui a répondu ?</div>
     <div id="q-who" style="display:flex;gap:7px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div id="q-validate-btn" style="display:none;">
+    <button class="btn btn-gold" onclick="validateAndContinue()" style="font-size:1rem;">
+      ✅ Valider &amp; retour à la route
+    </button>
   </div>
 </div>
 </div>
@@ -449,6 +455,48 @@ function screen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+
+// ─── KLAXON "VIEILLE VOITURE" ─────────────────────────────────────────────────
+function playHorn(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const notes=[
+      {f:280,t:0,d:0.18},{f:220,t:0.22,d:0.22},
+      {f:280,t:0.50,d:0.18},{f:220,t:0.72,d:0.28},
+    ];
+    notes.forEach(({f,t,d})=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      const wave=ctx.createWaveShaper();
+      const curve=new Float32Array(256);
+      for(let i=0;i<256;i++){const x=i*2/256-1;curve[i]=x*(Math.abs(x)<.5?2:1/(2*Math.abs(x)));}
+      wave.curve=curve;
+      osc.connect(wave);wave.connect(gain);gain.connect(ctx.destination);
+      osc.type='sawtooth';
+      osc.frequency.setValueAtTime(f,ctx.currentTime+t);
+      osc.frequency.linearRampToValueAtTime(f*0.96,ctx.currentTime+t+d);
+      gain.gain.setValueAtTime(0,ctx.currentTime+t);
+      gain.gain.linearRampToValueAtTime(0.35,ctx.currentTime+t+0.03);
+      gain.gain.setValueAtTime(0.35,ctx.currentTime+t+d-0.04);
+      gain.gain.linearRampToValueAtTime(0,ctx.currentTime+t+d);
+      osc.start(ctx.currentTime+t);
+      osc.stop(ctx.currentTime+t+d+0.05);
+    });
+  }catch(e){console.log('Audio indisponible');}
+}
+
+// ─── VALIDER & RETOUR À LA ROUTE ─────────────────────────────────────────────
+window.validateAndContinue=function(){
+  document.getElementById('q-validate-btn').style.display='none';
+  const zones=DAYS[currentDay].zones;
+  const allDone=zones.every(z=>completedIds.has(z.id));
+  update(ref(db,`games/${gameId}`),{state:'driving',currentQuestion:null,answers:{}});
+  answered=false;
+  if(allDone){currentDay===1?showDayEnd():showFinalEnd();return;}
+  screen('s-drive');
+  renderRoute();
+  scheduleJoker();
+};
 
 // ─── STARS ───────────────────────────────────────────────────────────────────
 (()=>{
@@ -722,7 +770,10 @@ function showQuestion(q){
     });
     startTimer(30,q);
   }
+  document.getElementById('q-validate-btn').style.display='none';
   screen('s-question');
+  // Klaxon à l'arrivée de la question 📯
+  setTimeout(playHorn, 300);
 }
 
 function startTimer(sec,q){
@@ -774,6 +825,8 @@ function submitAnswer(idx,q,timeout=false){
     [`answers/${myCar.id}`]:{idx,pts,correct,ts:Date.now()},
     [`scores/${myCar.id}`]:myScore,
   });
+  // Afficher bouton Valider apres reponse
+  setTimeout(()=>{ document.getElementById("q-validate-btn").style.display="block"; }, 1500);
   listenAnswers();
   setTimeout(()=>{
     get(ref(db,`games/${gameId}/answers`)).then(snap=>{
