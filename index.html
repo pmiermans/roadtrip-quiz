@@ -6,12 +6,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="theme-color" content="#06111e"/>
-<title>La Rosière 2027 🏔️</title>
+<title>Road Trip Quiz 🏔️</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#06111e;--card:#0d1e33;--card2:#112445;--gold:#f0c040;--blue:#5ba4e6;--snow:#e8f4fd;--muted:#6a8db0;--border:#1a3356;--ok:#52c77a;--err:#e85454;--purple:#a78bfa;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--snow);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:#12243a;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 button,input{font-family:'Nunito',sans-serif;}
 input{outline:none;}
 button{cursor:pointer;border:none;outline:none;}
@@ -45,9 +45,9 @@ button{cursor:pointer;border:none;outline:none;}
 .pbar-fill{height:100%;border-radius:99px;transition:width .7s ease;}
 
 .sec{font-size:.7rem;color:var(--muted);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;}
-.tag{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:5px 14px;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+.tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.92);border:1px solid var(--border);border-radius:99px;padding:5px 14px;font-size:.72rem;font-weight:800;color:#3a5f82;text-transform:uppercase;letter-spacing:.8px;}
 
-.ans-btn{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:13px;color:var(--snow);font-size:.9rem;font-weight:700;text-align:left;display:flex;align-items:center;gap:10px;width:100%;transition:all .2s;}
+.ans-btn{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:13px;color:#12243a;font-size:.9rem;font-weight:700;text-align:left;display:flex;align-items:center;gap:10px;width:100%;transition:all .2s;}
 .ans-btn:disabled{cursor:default;}
 .ans-btn.correct{background:rgba(82,199,122,.18);border-color:var(--ok);color:var(--ok);}
 .ans-btn.wrong{background:rgba(232,84,84,.18);border-color:var(--err);color:rgba(232,84,84,.78);}
@@ -56,7 +56,7 @@ button{cursor:pointer;border:none;outline:none;}
 .ans-letter.ok{background:var(--ok);}
 .ans-letter.err{background:var(--err);}
 
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card2);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 20px;font-size:.85rem;font-weight:700;color:var(--snow);transition:transform .3s ease;z-index:9999;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card2);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 20px;font-size:.85rem;font-weight:700;color:#12243a;transition:transform .3s ease;z-index:9999;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);}
 #toast.show{transform:translateX(-50%) translateY(0);}
 
 #sb-overlay{position:fixed;inset:0;background:rgba(6,17,30,.96);z-index:800;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;overflow-y:auto;}
@@ -68,6 +68,29 @@ button{cursor:pointer;border:none;outline:none;}
 
 .afu{animation:fu .45s ease both;}
 .app{animation:pp .35s ease both;}
+/* Textes adaptés fond clair */
+.serif{color:#12243a !important;}
+h1.serif{color:#12243a !important;}
+h2.serif{color:#12243a !important;}
+.sec{color:#3a5f82;}
+body{color:#12243a;}
+input{color:#12243a !important;}
+input::placeholder{color:#6a8db0 !important;}
+/* Cards opaques */
+.card{background:rgba(255,255,255,0.90) !important;box-shadow:0 3px 20px rgba(0,0,0,0.12);}
+.card2{background:rgba(240,247,255,0.92) !important;box-shadow:0 2px 14px rgba(0,0,0,0.08);}
+/* Boutons réponse */
+.ans-btn{background:rgba(255,255,255,0.90) !important;color:#12243a !important;border-color:#a8c8e8 !important;}
+.ans-btn.correct{background:rgba(14,122,69,0.15) !important;border-color:#0e7a45 !important;color:#0e7a45 !important;}
+.ans-btn.wrong{background:rgba(192,32,31,0.12) !important;border-color:#c0201f !important;color:#c0201f !important;}
+.ans-btn.faded{color:#6a8db0 !important;}
+.ans-letter{background:#d0e8f8 !important;color:#12243a !important;}
+.ans-letter.ok{background:#0e7a45 !important;color:#fff !important;}
+.ans-letter.err{background:#c0201f !important;color:#fff !important;}
+/* Pbar */
+.pbar{background:#c8dff0;}
+/* Player rows */
+.player-row{color:#12243a;}
 
 /* ── ANIMATIONS SPECTACULAIRES ── */
 @keyframes shake{0%,100%{transform:translateX(0)}10%{transform:translateX(-12px)}20%{transform:translateX(12px)}30%{transform:translateX(-10px)}40%{transform:translateX(10px)}50%{transform:translateX(-6px)}60%{transform:translateX(6px)}70%{transform:translateX(-3px)}80%{transform:translateX(3px)}90%{transform:translateX(-2px)}}
@@ -99,7 +122,7 @@ button{cursor:pointer;border:none;outline:none;}
 
 <div class="stars" id="stars"></div>
 <!-- Calque blanc semi-transparent sur la photo -->
-<div style="position:fixed;inset:0;background:rgba(255,255,255,0.72);pointer-events:none;z-index:0;backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);"></div>
+<div style="position:fixed;inset:0;background:rgba(255,255,255,0.38);pointer-events:none;z-index:0;"></div>
 <svg class="mts" viewBox="0 0 400 100" preserveAspectRatio="none" height="160">
   <polygon points="0,100 60,15 120,55 200,5 280,50 340,20 400,40 400,100" fill="white"/>
   <polygon points="0,100 40,40 100,70 170,30 250,65 310,35 380,55 400,45 400,100" fill="white" opacity=".5"/>
@@ -117,8 +140,8 @@ button{cursor:pointer;border:none;outline:none;}
   <div style="text-align:center;width:100%;max-width:380px;">
     <div id="chambery-stars-container" style="position:relative;height:80px;margin-bottom:10px;"></div>
     <div style="font-size:4rem;margin-bottom:10px;animation:winner-bounce 1s ease-in-out 3;">⛰️🌙</div>
-    <h2 class="serif" style="font-size:2rem;color:var(--gold);margin-bottom:8px;animation:fu .5s ease;">Chambéry !</h2>
-    <p style="color:var(--snow);font-size:1rem;font-weight:700;margin-bottom:6px;">Fin du Jour 1 — Bravo à tous ! 🎉</p>
+    <h2 class="serif" style="font-size:2rem;color:#12243a;margin-bottom:8px;animation:fu .5s ease;">Chambéry !</h2>
+    <p style="color:#12243a;font-size:1rem;font-weight:700;margin-bottom:6px;">Fin du Jour 1 — Bravo à tous ! 🎉</p>
     <p style="color:var(--muted);font-size:.82rem;margin-bottom:24px;">À demain pour La Rosière 🎿</p>
     <button class="btn btn-gold" onclick="closeChambereyOverlay()" style="font-size:1rem;">
       🏨 Voir le classement Jour 1
@@ -132,7 +155,7 @@ button{cursor:pointer;border:none;outline:none;}
   <div style="width:100%;max-width:390px;padding-top:10px;">
     <div style="text-align:center;margin-bottom:20px;">
       <div style="font-size:2.2rem;margin-bottom:4px;">🏆</div>
-      <div class="serif" style="font-size:1.4rem;color:var(--gold);">Classement en direct</div>
+      <div class="serif" style="font-size:1.4rem;color:#12243a;">Classement en direct</div>
     </div>
     <div id="sb-list" style="margin-bottom:20px;display:flex;flex-direction:column;gap:10px;"></div>
     <button class="btn btn-gold" onclick="closeSB()">← Retour au voyage</button>
@@ -144,24 +167,24 @@ button{cursor:pointer;border:none;outline:none;}
 <div class="content afu">
   <div style="text-align:center;margin-bottom:24px;">
     <div style="font-size:52px;margin-bottom:8px;">🏔️</div>
-    <h1 class="serif" style="font-size:1.85rem;color:var(--gold);line-height:1.2;margin-bottom:6px;">La Rosière 2027</h1>
+    <h1 class="serif" style="font-size:1.85rem;color:#12243a;line-height:1.2;margin-bottom:6px;">Road Trip Quiz</h1>
     <p style="color:var(--muted);font-size:.82rem;">Sprimont → Chambéry → La Rosière</p>
   </div>
 
   <div class="sec">Votre véhicule</div>
   <div id="car-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;"></div>
 
-  <input id="i-nick" placeholder="✏️ Surnom de votre équipe (optionnel)" style="width:100%;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--snow);font-size:.9rem;margin-bottom:14px;"/>
+  <input id="i-nick" placeholder="✏️ Surnom de votre équipe (optionnel)" style="width:100%;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:#12243a;font-size:.9rem;margin-bottom:14px;"/>
 
   <div class="sec">Code de partie (identique pour les 4 équipes)</div>
   <div style="display:flex;gap:8px;margin-bottom:16px;">
-    <input id="i-gid" placeholder="ex: SKI2025" maxlength="8" oninput="this.value=this.value.toUpperCase()" style="flex:1;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--snow);font-size:1.1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;"/>
+    <input id="i-gid" placeholder="ex: SKI2025" maxlength="8" oninput="this.value=this.value.toUpperCase()" style="flex:1;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:#12243a;font-size:1.1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;"/>
     <button onclick="genId()" style="padding:0 14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--muted);font-size:.8rem;font-weight:800;">🎲</button>
   </div>
 
   <div class="card" style="margin-bottom:18px;font-size:.78rem;color:var(--muted);line-height:1.7;">
     <strong style="color:var(--blue);">ℹ️ Comment ça marche ?</strong><br/>
-    Chaque co-pilote active le GPS → les questions se déclenchent <strong style="color:var(--snow);">automatiquement</strong> à l'approche de chaque ville, pour <strong style="color:var(--snow);">toutes les équipes en même temps</strong>. Les questions Joker tombent seules de façon aléatoire. Posez le téléphone, c'est tout ! 🎉
+    Chaque co-pilote active le GPS → les questions se déclenchent <strong style="color:#12243a;">automatiquement</strong> à l'approche de chaque ville, pour <strong style="color:#12243a;">toutes les équipes en même temps</strong>. Les questions Joker tombent seules de façon aléatoire. Posez le téléphone, c'est tout ! 🎉
   </div>
 
   <button class="btn btn-gold" onclick="joinGame()">🚦 Rejoindre la partie</button>
@@ -173,17 +196,17 @@ button{cursor:pointer;border:none;outline:none;}
 <div class="content">
   <div style="text-align:center;margin-bottom:22px;" class="afu">
     <div style="font-size:2.5rem;margin-bottom:6px;">🎮</div>
-    <h2 class="serif" style="font-size:1.4rem;color:var(--gold);margin-bottom:8px;">Salle d'attente</h2>
+    <h2 class="serif" style="font-size:1.4rem;color:#12243a;margin-bottom:8px;">Salle d'attente</h2>
     <div style="display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:5px 16px;">
       <span style="font-size:.78rem;color:var(--muted);">Code :</span>
-      <span id="l-gid" style="font-weight:900;letter-spacing:2.5px;color:var(--snow);font-size:1rem;"></span>
+      <span id="l-gid" style="font-weight:900;letter-spacing:2.5px;color:#12243a;font-size:1rem;"></span>
     </div>
   </div>
 
   <div class="sec">Voitures connectées</div>
   <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;" id="l-players"></div>
 
-  <div id="l-status" style="background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.28);border-radius:12px;padding:12px 14px;margin-bottom:18px;font-size:.8rem;color:var(--gold);text-align:center;">
+  <div id="l-status" style="background:rgba(26,95,160,.1);border:1px solid rgba(26,95,160,.3);border-radius:12px;padding:12px 14px;margin-bottom:18px;font-size:.8rem;color:#1a5fa0;font-weight:700;text-align:center;">
     En attente des autres voitures... 🚗
   </div>
 
@@ -207,13 +230,13 @@ button{cursor:pointer;border:none;outline:none;}
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
     <div>
       <div style="font-size:.66rem;color:var(--muted);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;" id="d-day-label">Jour 1</div>
-      <div class="serif" style="color:var(--gold);font-size:.98rem;" id="d-carname">🚙</div>
+      <div class="serif" style="color:#12243a;font-size:.98rem;" id="d-carname">🚙</div>
     </div>
     <div style="display:flex;gap:7px;align-items:center;">
       <button onclick="openSB()" style="padding:7px 10px;border-radius:9px;background:rgba(240,192,64,.14);border:1px solid rgba(240,192,64,.35);color:var(--gold);font-size:.78rem;font-weight:800;">🏆 Scores</button>
       <div style="text-align:right;">
         <div style="font-size:.64rem;color:var(--muted);text-transform:uppercase;">Mon score</div>
-        <div id="d-score" style="font-size:1.55rem;font-weight:900;color:var(--gold);line-height:1;">0<span style="font-size:.7rem;color:var(--muted);"> pts</span></div>
+        <div id="d-score" style="font-size:1.55rem;font-weight:900;color:#1a5fa0;line-height:1;">0<span style="font-size:.7rem;color:var(--muted);"> pts</span></div>
       </div>
     </div>
   </div>
@@ -231,7 +254,7 @@ button{cursor:pointer;border:none;outline:none;}
     </div>
     <div id="gps-err" style="color:var(--err);font-size:.72rem;margin-top:7px;display:none;"></div>
     <div id="gps-ok-msg" style="color:var(--ok);font-size:.72rem;margin-top:7px;display:none;">✅ GPS actif — questions automatiques activées</div>
-    <div style="margin-top:9px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:8px;padding:7px 10px;font-size:.72rem;color:var(--purple);text-align:center;">
+    <div style="margin-top:9px;background:rgba(92,53,160,.1);border:1px solid rgba(92,53,160,.3);border-radius:8px;padding:7px 10px;font-size:.72rem;color:#5c35a0;font-weight:700;text-align:center;">
       🃏 Questions Joker : déclenchement automatique aléatoire en route
     </div>
   </div>
@@ -246,7 +269,7 @@ button{cursor:pointer;border:none;outline:none;}
 <div class="content app">
   <div style="text-align:center;margin-bottom:16px;">
     <div id="q-tag" class="tag" style="margin:0 auto 9px;"></div>
-    <h2 id="q-zone" class="serif" style="font-size:1.4rem;color:var(--gold);margin-bottom:3px;"></h2>
+    <h2 id="q-zone" class="serif" style="font-size:1.4rem;color:#12243a;margin-bottom:3px;"></h2>
     <div id="q-diff" style="font-size:.7rem;font-weight:800;"></div>
   </div>
 
@@ -284,7 +307,7 @@ button{cursor:pointer;border:none;outline:none;}
 <div class="content afu">
   <div style="text-align:center;margin-bottom:18px;">
     <div style="font-size:.7rem;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">Résultats</div>
-    <div id="rv-title" class="serif" style="font-size:1.3rem;color:var(--gold);"></div>
+    <div id="rv-title" class="serif" style="font-size:1.3rem;color:#12243a;"></div>
   </div>
 
   <div id="rv-answer" class="card2" style="padding:14px;margin-bottom:16px;text-align:center;"></div>
@@ -307,7 +330,7 @@ button{cursor:pointer;border:none;outline:none;}
 <div class="content afu">
   <div style="text-align:center;margin-bottom:24px;">
     <div style="font-size:3.5rem;margin-bottom:8px;">⛰️🌙</div>
-    <h2 class="serif" style="color:var(--gold);font-size:1.55rem;margin-bottom:5px;">Étape à Chambéry !</h2>
+    <h2 class="serif" style="color:#12243a;font-size:1.55rem;margin-bottom:5px;">Étape à Chambéry !</h2>
     <p style="color:var(--muted);font-size:.83rem;">Fin du Jour 1 — À demain pour La Rosière 🎿</p>
   </div>
   <div style="background:linear-gradient(135deg,#112240,#0d1e33);border-radius:16px;padding:18px;border:1px solid rgba(240,192,64,.3);margin-bottom:18px;" id="de-podium"></div>
@@ -326,7 +349,7 @@ button{cursor:pointer;border:none;outline:none;}
 <div class="content afu">
   <div style="text-align:center;margin-bottom:20px;">
     <div style="font-size:3.5rem;margin-bottom:8px;">🏔️🎿🏆</div>
-    <h2 class="serif" style="color:var(--gold);font-size:1.5rem;margin-bottom:4px;">Bienvenue à La Rosière !</h2>
+    <h2 class="serif" style="color:#12243a;font-size:1.5rem;margin-bottom:4px;">Bienvenue à La Rosière !</h2>
     <p style="color:var(--muted);font-size:.82rem;">Fin du voyage — Classement final</p>
   </div>
   <div style="background:linear-gradient(135deg,#112240,#0d1e33);border-radius:16px;padding:18px;border:1px solid rgba(240,192,64,.35);margin-bottom:18px;box-shadow:0 0 30px rgba(240,192,64,.1);" id="end-podium"></div>
@@ -492,7 +515,7 @@ function gd(a,b,c,d){const R=6371e3,f1=a*Math.PI/180,f2=c*Math.PI/180,df=(c-a)*M
 function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
 function shuffle(arr){return[...arr].sort(()=>Math.random()-.5);}
 function pickQs(zone,n=3){return shuffle(zone.qs).slice(0,Math.min(n,zone.qs.length));}
-function fmtScore(s){return`${s}<span style="font-size:.7rem;color:var(--muted);"> pts</span>`;}
+function fmtScore(s){return`${s}<span style="font-size:.7rem;color:#3a5f82;"> pts</span>`;}
 
 function toast(msg,dur=2800){
   const t=document.getElementById('toast');
@@ -563,7 +586,7 @@ window.validateAndContinue=function(){
   CARS.forEach(c=>{
     const b=document.createElement('button');
     b.id='cb-'+c.id;
-    b.style.cssText='background:var(--card);border:2px solid var(--border);border-radius:14px;padding:13px 8px;color:var(--snow);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s;';
+    b.style.cssText='background:var(--card);border:2px solid var(--border);border-radius:14px;padding:13px 8px;color:#12243a;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s;';
     b.innerHTML=`<span style="font-size:1.85rem">${c.emoji}</span><span style="font-size:.78rem;font-weight:800;color:var(--muted)">${c.name}</span>`;
     b.onclick=()=>selectCar(c.id);
     g.appendChild(b);
@@ -983,7 +1006,7 @@ function renderFinalEnd(scores){
   const leader=ranked[0];
   const grade=leader.total>=150?'🏆 Génie absolu du road trip !':leader.total>=100?'⛷️ Champion du quiz alpin !':leader.total>=60?'🎿 Excellent voyageur !':'☃️ On repart l\'an prochain !';
   renderAnimatedPodium(ranked, 'end-podium');
-  document.getElementById('end-podium').innerHTML+=`<div style="text-align:center;margin-top:10px;"><div style="color:var(--snow);font-weight:700;font-size:.95rem;animation:fu .5s 1.5s ease both;">${grade}</div></div>`;
+  document.getElementById('end-podium').innerHTML+=`<div style="text-align:center;margin-top:10px;"><div style="color:#12243a;font-weight:700;font-size:.95rem;animation:fu .5s 1.5s ease both;">${grade}</div></div>`;
   document.getElementById('end-rank').innerHTML=ranked.map((p,i)=>`<div class="player-row"><div style="display:flex;align-items:center;gap:9px;"><div class="rank-medal" style="background:${['rgba(255,215,0,.2)','rgba(192,192,192,.2)','rgba(205,127,50,.2)','rgba(106,141,176,.15)'][i]};color:${['#ffd700','#c0c0c0','#cd7f32','var(--muted)'][i]};">${MEDALS[i]}</div><span>${p.emoji}</span><span style="font-weight:800;${p.id===myCar.id?'color:var(--gold)':''}">${p.nick}</span></div><span style="font-weight:900;color:${i===0?'var(--gold)':'var(--snow)'};">${p.total}<span style="font-size:.7rem;color:var(--muted);"> pts</span></span></div>`).join('');
   screen('s-end');
 }
