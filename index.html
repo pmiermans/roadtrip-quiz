@@ -10,7 +10,7 @@
 <style>
 
 /* ╔═══════════════════════════════════════════════════════════════╗
-   ║  🎨 THÈME — MODIFIEZ UNIQUEMENT CE BLOC POUR TOUT CHANGER    ║
+   ║  🎨 THÈME — MODIFIEZ UNIQUEMENT CE BLOC POUR TOUT CHANGER   ║
    ╚═══════════════════════════════════════════════════════════════╝ */
 :root {
 
@@ -67,7 +67,7 @@
   --theme-feedback-err:  #bf1e1e;        /* texte "Raté !" mauvaise réponse    */
 
   /* --- ÉCRAN ROUTE -------------------------------------------- */
-  --theme-zone-done:     #e91e8c;        /* zone complétée (rose foncé)        */
+  --theme-zone-done:     #0a7a40;        /* zone complétée (vert)              */
   --theme-zone-next:     #e91e8c;        /* prochaine zone (rose foncé)        */
   --theme-zone-pending:  #1558a0;        /* zones à venir (bleu foncé)         */
   --theme-gps-active-bg: rgba(10,122,64,0.12); /* fond bouton GPS actif        */
@@ -796,7 +796,7 @@ function renderRoute(){
       <div style="padding-top:5px;opacity:${isNext?1:1};flex:1;display:flex;justify-content:space-between;">
         <div>
           <div style="font-weight:800;font-size:1.6rem;font-weight:${isNext||done?'900':'700'};color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'#1558a0'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
-          <div style="font-size:1.2rem;color:var(--theme-text-muted);font-weight:400;">${z.theme}</div>
+          <div style="font-size:1.2rem;color:var(--theme-text-muted);font-weight:800;">${z.theme}</div>
         </div>
       </div>
     </div>`;
