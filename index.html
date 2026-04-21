@@ -157,7 +157,7 @@ button { cursor:pointer; border:none; outline:none; }
 .pbar-fill { height:100%; border-radius:99px; transition:width .7s ease; }
 
 /* ── Labels & tags ── */
-.sec { font-size:.7rem; color:var(--theme-text-muted); font-weight:800; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:10px; }
+.sec { font-size:1.1rem; color:var(--theme-text-muted); font-weight:800; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:10px; }
 .tag { display:inline-flex; align-items:center; gap:6px; background:var(--theme-card); border:1px solid var(--theme-border); border-radius:99px; padding:5px 14px; font-size:.72rem; font-weight:800; color:var(--theme-text-muted); text-transform:uppercase; letter-spacing:.8px; }
 
 /* ── Boutons réponse ── */
@@ -253,7 +253,7 @@ button { cursor:pointer; border:none; outline:none; }
 
   <input id="i-nick" placeholder="✏️ Surnom de votre équipe (optionnel)" style="width:100%;padding:11px 13px;border-radius:10px;background:var(--theme-card);border:1px solid var(--theme-border);color:#12243a;font-size:.9rem;margin-bottom:14px;"/>
 
-  <div class="sec">Code de partie (identique pour les 4 équipes)</div>
+  <div class="sec">Code de partie</div>
   <div style="display:flex;gap:8px;margin-bottom:16px;">
     <input id="i-gid" placeholder="ex: SKI2027" value="SKI2027" maxlength="8" oninput="this.value=this.value.toUpperCase()" style="flex:1;padding:11px 13px;border-radius:10px;background:var(--theme-card);border:1px solid var(--theme-border);color:#12243a;font-size:1.1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;"/>
   </div>
@@ -305,8 +305,8 @@ button { cursor:pointer; border:none; outline:none; }
 <div class="content">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
     <div>
-      <div style="font-size:.66rem;color:var(--theme-text-muted);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;" id="d-day-label">Jour 1</div>
-      <div class="serif" style="color:#12243a;font-size:.98rem;" id="d-carname">🚙</div>
+      <div style="font-size:1rem;color:var(--theme-text-muted);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;" id="d-day-label">Jour 1</div>
+      <div class="serif" style="color:#12243a;font-size:1.3rem;" id="d-carname">🚙</div>
     </div>
     <div style="display:flex;gap:7px;align-items:center;">
       <button onclick="openSB()" style="padding:7px 10px;border-radius:9px;background:rgba(240,192,64,.14);border:1px solid rgba(240,192,64,.35);color:var(--theme-primary);font-size:.78rem;font-weight:800;">🏆 Scores</button>
@@ -318,7 +318,7 @@ button { cursor:pointer; border:none; outline:none; }
   </div>
 
   <div class="pbar" style="height:6px;margin-bottom:4px;"><div id="d-prog" class="pbar-fill" style="height:6px;background:linear-gradient(90deg,var(--blue),var(--gold));width:0%;"></div></div>
-  <div style="display:flex;justify-content:space-between;font-size:.66rem;color:var(--theme-text-muted);margin-bottom:16px;">
+  <div style="display:flex;justify-content:space-between;font-size:1rem;color:var(--theme-text-muted);font-weight:800;margin-bottom:16px;">
     <span id="d-from">🟢 Sprimont</span><span id="d-zone-count">0/9</span><span id="d-to">⛰️ Chambéry</span>
   </div>
 
@@ -778,11 +778,11 @@ function renderRoute(){
     const done=completedIds.has(z.id);
     const isNext=i===zones.findIndex(x=>!completedIds.has(x.id));
     return`<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:7px;">
-      <div style="display:flex;flex-direction:column;align-items:center;min-width:28px;">
-        <div style="width:28px;height:28px;border-radius:50%;background:${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--card)'};border:2px solid ${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--theme-border)'};display:flex;align-items:center;justify-content:center;font-size:${done?'.75rem':'.9rem'};color:${done||isNext?'var(--theme-bg-color)':'var(--theme-text-muted)'};font-weight:900;${isNext?'animation:pu 2s infinite':''};">
+      <div style="display:flex;flex-direction:column;align-items:center;min-width:40px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--card)'};border:2px solid ${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--theme-border)'};display:flex;align-items:center;justify-content:center;font-size:${done?'1rem':'1.2rem'};color:${done||isNext?'var(--theme-bg-color)':'var(--theme-text-muted)'};font-weight:900;${isNext?'animation:pu 2s infinite':''};">
           ${done?'✓':z.emoji}
         </div>
-        ${i<zones.length-1?`<div style="width:2px;height:22px;background:${done?'rgba(82,199,122,.4)':'var(--theme-border)'};margin-top:2px;"></div>`:''}
+        ${i<zones.length-1?`<div style="width:2px;height:28px;background:${done?'rgba(82,199,122,.4)':'var(--theme-border)'};margin-top:2px;"></div>`:''}
       </div>
       <div style="padding-top:5px;opacity:${done?.6:isNext?1:.4};flex:1;display:flex;justify-content:space-between;">
         <div>
