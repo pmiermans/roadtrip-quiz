@@ -905,6 +905,8 @@ function listenAnswers(){
 function showQuestion(q){
   if(jokerTimeout){clearTimeout(jokerTimeout);jokerTimeout=null;}
   answered=false;currentQ=q;
+  // Marquer la zone comme complétée sur tous les appareils (y compris via Firebase)
+  if(q._zoneId && q._zoneId !== 'joker') completedIds.add(q._zoneId);
   document.getElementById('q-tag').innerHTML=`<span>${q._zoneEmoji||'🃏'}</span><span>${q._zoneTheme||'Joker'}</span>`;
   document.getElementById('q-zone').textContent=q._zoneName||'Surprise';
   const diffEl=document.getElementById('q-diff');
