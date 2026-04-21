@@ -287,12 +287,15 @@ button { cursor:pointer; border:none; outline:none; }
   </div>
 
   <div class="sec">Quel jour sommes-nous ?</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;">
-    <button id="btn-j1" onclick="setDay(1)" style="padding:13px 8px;border-radius:12px;background:#ffb3d9;border:2px solid #e91e8c;color:#8b0057;font-weight:900;font-size:.88rem;line-height:1.5;">
-      📅 Jour 1<br/><span style="font-size:.7rem;font-weight:600;opacity:.8;">Sprimont → Chambéry</span>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:18px;">
+    <button id="btn-j1" onclick="setDay(1)" style="padding:13px 8px;border-radius:12px;background:#ffb3d9;border:2px solid #e91e8c;color:#8b0057;font-weight:900;font-size:.82rem;line-height:1.5;">
+      📅 Jour 1<br/><span style="font-size:.65rem;font-weight:600;opacity:.8;">Sprimont → Chambéry</span>
     </button>
-    <button id="btn-j2" onclick="setDay(2)" style="padding:13px 8px;border-radius:12px;background:#ffb3d9;border:2px solid #e91e8c;color:#8b0057;font-weight:900;font-size:.88rem;line-height:1.5;">
-      📅 Jour 2<br/><span style="font-size:.7rem;font-weight:600;opacity:.8;">Chambéry → La Rosière</span>
+    <button id="btn-j2" onclick="setDay(2)" style="padding:13px 8px;border-radius:12px;background:#ffb3d9;border:2px solid #e91e8c;color:#8b0057;font-weight:900;font-size:.82rem;line-height:1.5;">
+      📅 Jour 2<br/><span style="font-size:.65rem;font-weight:600;opacity:.8;">Chambéry → La Rosière</span>
+    </button>
+    <button id="btn-j3" onclick="setDay(3)" style="padding:13px 8px;border-radius:12px;background:#ffb3d9;border:2px solid #e91e8c;color:#8b0057;font-weight:900;font-size:.82rem;line-height:1.5;">
+      🏠 Retour<br/><span style="font-size:.65rem;font-weight:600;opacity:.8;">La Rosière → Sprimont</span>
     </button>
   </div>
 
@@ -459,94 +462,248 @@ const DAYS = {
     zones:[
       {id:1,name:"Sprimont",emoji:"🟢",lat:50.506,lng:5.666,radius:5000,theme:"Brise-glace 🎉",
        qs:[
-        {q:"Qui dans le convoi a le plus de chances de s'endormir dans les 30 premières minutes ?",type:"vote",hint:"Soyez honnêtes 😴"},
-        {q:"Quelle voiture va faire le premier arrêt pipi selon vous ?",type:"vote",hint:"On vérifie dans 1h 😏"},
-        {q:"Combien de km nous séparent de La Rosière environ ?",opts:["~450 km","~590 km","~720 km"],ans:1,pts:10,dif:2},
-        {q:"La Belgique détient le record mondial du temps sans gouvernement. Combien de jours ?",opts:["194 jours","541 jours","696 jours !"],ans:2,pts:15,dif:3},
+        {q:"Philippe est le GO de ce voyage. GO ça veut dire...",opts:["Grand Organisateur","Gentil Organisateur","Gars Overbooked"],ans:1,pts:10,dif:1},
+        {q:"Carine gère l'intendance épaulée par Régine. Qui commande selon vous ?",type:"vote",hint:"😄 Carine ou Régine ? Chaque voiture vote !"},
+        {q:"Gordon est débutant en snowboard MAIS il fonce sans faire attention. Pronostic pour sa première journée ?",opts:["Impeccable — il est naturel","Quelques gamelles maîtrisées","Intervention des secours garantie"],ans:2,pts:10,dif:1},
+        {q:"Régine n'aime ni la neige ni le froid. Qu'est-ce qui l'a convaincue de venir ?",type:"vote",hint:"😂 Luc donne ta version dans le groupe !"},
+        {q:"Chanel (Chi-Tzu V1) et Lily (V4) — laquelle va faire le plus d'arrêts pipi sur l'autoroute ?",type:"vote",hint:"🐶 Vote inter-voitures !"},
+        {q:"C'est la 4ème fois pour la plupart. Qui sont les petits nouveaux ?",opts:["Luc, Régine et Célia","Gordon et Célia","Luc, Régine, Célia et Gordon"],ans:0,pts:10,dif:1},
+        {q:"Adrien et Amélie sont frère-sœur ET casse-cous. Qui tombera le premier ?",type:"vote",hint:"🎿 Paris inter-voitures — on vérifie à La Rosière !"},
+        {q:"La Ford Escort de Gordon & Amélie est un modèle mythique des années...",opts:["1970-80","1980-2000","2000-2010"],ans:1,pts:10,dif:1},
        ]},
-      {id:2,name:"Rodange",emoji:"🇱🇺",lat:49.548,lng:5.841,radius:10000,theme:"Luxembourg 🇱🇺",
+      {id:2,name:"Bastogne",emoji:"⭐",lat:50.001,lng:5.715,radius:10000,theme:"Bataille des Ardennes",
+       qs:[
+        {q:"La célèbre bataille des Ardennes a eu lieu en...",opts:["Décembre 1942","Décembre 1944","Janvier 1945"],ans:1,pts:10,dif:2},
+        {q:"Le général américain McAuliffe encerclé à Bastogne a répondu 'Nuts!' aux Allemands. Ça signifie...",opts:["Oui, on se rend","Jamais, allez vous faire voir !","On négocie demain"],ans:1,pts:10,dif:2},
+        {q:"Le Mémorial du Mardasson à Bastogne a la forme de...",opts:["Une étoile à 5 branches","Un tank américain stylisé","Une croix de guerre"],ans:0,pts:15,dif:3},
+        {q:"Bastogne est en Région wallonne dans la province de...",opts:["Namur","Luxembourg belge","Liège"],ans:1,pts:10,dif:2},
+        {q:"DÉFI : Quelle voiture peut nommer le plus de pays ayant participé à la Bataille des Ardennes ?",type:"vote",hint:"⭐ Minimum 3 — partagez dans le groupe !"},
+       ]},
+      {id:3,name:"Rodange",emoji:"🇱🇺",lat:49.548,lng:5.841,radius:10000,theme:"Luxembourg 🇱🇺",
        qs:[
         {q:"Combien de langues officielles au Luxembourg ?",opts:["1 — le luxembourgeois","2 — français & allemand","3 — luxembourgeois, français & allemand"],ans:2,pts:10,dif:2},
-        {q:"Le Luxembourg est-il plus grand que la province de Liège ?",opts:["Oui, nettement plus grand","Non, plus petit","Quasiment identique (~2 600 km²)"],ans:2,pts:10,dif:2},
-        {q:"Pourquoi tant d'entreprises ont-elles leur siège au Luxembourg ?",type:"vote",hint:"Indice en F... comme fiscalité 😅 Débattez !"},
-        {q:"Le plat national luxembourgeois 'Judd mat Gaardebounen' est...",opts:["Du porc fumé aux fèves","Du lapin aux choux de Bruxelles","Du veau à la bière locale"],ans:0,pts:15,dif:3},
+        {q:"Le Luxembourg est-il plus grand que la province de Liège ?",opts:["Oui nettement","Non plus petit","Quasiment identique (~2 600 km²)"],ans:2,pts:10,dif:2},
+        {q:"Le plat national 'Judd mat Gaardebounen' est...",opts:["Du porc fumé aux fèves","Du lapin aux choux","Du veau à la bière"],ans:0,pts:15,dif:3},
+        {q:"Pourquoi tant d'entreprises ont-elles leur siège au Luxembourg ?",type:"vote",hint:"Indice : ça commence par F... comme fiscalité 😅 Débattez !"},
+        {q:"Le Grand-Duc du Luxembourg s'appelle...",opts:["Henri","Guillaume","Charles"],ans:0,pts:10,dif:2},
        ]},
-      {id:3,name:"Thionville",emoji:"⚙️",lat:49.358,lng:6.167,radius:9000,theme:"Lorraine",
+      {id:4,name:"Longwy",emoji:"🏰",lat:49.520,lng:5.763,radius:8000,theme:"Vauban & Émaux",
        qs:[
-        {q:"La vraie Quiche Lorraine originale contient-elle du fromage ?",opts:["Oui, du gruyère évidemment !","Non — zéro fromage dans l'originale !","Seulement si c'est du comté"],ans:1,pts:10,dif:2},
-        {q:"Combien de fois a-t-on dit 'on est bientôt arrivés' depuis Sprimont ?",type:"vote",hint:"Soyez honnêtes 😂"},
-        {q:"Thionville s'appelait 'Diedenhofen' sous quelle occupation ?",opts:["Prussienne (après 1871)","Austro-hongroise","Napoléonienne"],ans:0,pts:15,dif:3},
+        {q:"Longwy est célèbre pour ses émaux. Ces faïences colorées sont nées au...",opts:["XVIe siècle","XVIIIe siècle","XIXe siècle"],ans:1,pts:15,dif:3},
+        {q:"Les fortifications de Vauban à Longwy sont classées UNESCO. Vauban était...",opts:["Un général de Napoléon","L'ingénieur militaire de Louis XIV","Un architecte belge du XVIIe"],ans:1,pts:10,dif:2},
+        {q:"Longwy fait partie de quel département français ?",opts:["Moselle","Meurthe-et-Moselle","Meuse"],ans:1,pts:10,dif:2},
+        {q:"Niveau d'énergie dans la voiture — on est partis depuis Sprimont depuis combien d'heures ?",type:"vote",hint:"⏰ Chaque voiture donne son heure exacte de départ !"},
        ]},
-      {id:4,name:"Metz",emoji:"⛪",lat:49.119,lng:6.176,radius:9000,theme:"Cathédrale & Histoire",
+      {id:5,name:"Thionville",emoji:"⚙️",lat:49.358,lng:6.167,radius:9000,theme:"Lorraine",
        qs:[
-        {q:"La cathédrale de Metz est surnommée 'La Lanterne de Dieu' car...",opts:["Ses 6 500 m² de vitraux — la plus vitrée du monde","Son clocher illuminé toute la nuit","Sa forme évoque une lanterne gothique"],ans:0,pts:10,dif:2},
-        {q:"Les Mirabelles de Lorraine, c'est...",opts:["Une petite prune jaune dorée","Une cerise rouge tardive","Une variété de poire miniature"],ans:0,pts:10,dif:1},
-        {q:"Niveau d'énergie dans votre voiture EN CE MOMENT (1=zombie, 5=trop de café) ?",type:"vote",hint:"☕ Comparez avec les autres voitures !"},
+        {q:"La vraie Quiche Lorraine originale contient-elle du fromage ?",opts:["Oui du gruyère !","Non — zéro fromage !","Seulement du comté"],ans:1,pts:10,dif:2},
+        {q:"Thionville s'appelait 'Diedenhofen' sous occupation...",opts:["Prussienne après 1871","Austro-hongroise","Napoléonienne"],ans:0,pts:15,dif:3},
+        {q:"Luc n'a plus skié depuis longtemps et en rêvait. Sa première descente sera...",opts:["Parfaite — ça revient vite","Correcte avec quelques gamelles","Mémorable pour de mauvaises raisons"],ans:1,pts:10,dif:1},
+        {q:"La sidérurgie lorraine utilisait quel minerai local ?",opts:["La bauxite","Le minerai de fer — la minette","Le charbon"],ans:1,pts:10,dif:2},
+       ]},
+      {id:6,name:"Metz",emoji:"⛪",lat:49.119,lng:6.176,radius:9000,theme:"Cathédrale & Histoire",
+       qs:[
+        {q:"La cathédrale de Metz 'La Lanterne de Dieu' possède...",opts:["6 500 m² de vitraux — record mondial","Le plus haut clocher de France","La plus grande crypte d'Europe"],ans:0,pts:10,dif:2},
         {q:"Metz fut allemande de 1871 à 1918 — soit pendant combien d'années ?",opts:["28 ans","47 ans","65 ans"],ans:1,pts:15,dif:3},
+        {q:"Pierre ski à niveau intermédiaire. Ses enfants Adrien & Amélie sont casse-cous. Il les regarde avec...",opts:["Fierté totale","Fierté mêlée d'angoisse","Les yeux fermés et une bière à la main"],ans:2,pts:10,dif:1},
+        {q:"Le Centre Pompidou-Metz a été conçu par...",opts:["Zaha Hadid","Shigeru Ban","Norman Foster"],ans:1,pts:15,dif:3},
        ]},
-      {id:5,name:"Nancy",emoji:"🏛️",lat:48.692,lng:6.184,radius:9000,theme:"Place Stanislas",
+      {id:7,name:"Nancy",emoji:"🏛️",lat:48.692,lng:6.184,radius:9000,theme:"Place Stanislas",
        qs:[
-        {q:"Stanislas Leszczynski, dont la célèbre place porte le nom, était...",opts:["Un architecte baroque polonais","Un duc de Lorraine & ex-roi de Pologne","Le beau-père de Louis XV"],ans:1,pts:10,dif:2},
-        {q:"La Bergamote de Nancy utilise quel agrume ?",opts:["La bergamote (agrume de Calabre)","Le citron vert cubain","La mandarine de Corse"],ans:0,pts:10,dif:1},
+        {q:"Stanislas dont la célèbre place porte le nom était...",opts:["Un architecte baroque polonais","Un duc de Lorraine & ex-roi de Pologne","Le beau-père de Louis XV"],ans:1,pts:10,dif:2},
+        {q:"La Bergamote de Nancy utilise quel agrume ?",opts:["La bergamote de Calabre","Le citron vert","La mandarine"],ans:0,pts:10,dif:1},
+        {q:"Gordon débutant + Adrien casse-cou + Amélie casse-cou sur les mêmes pistes. Le pisteur va...",opts:["Profiter du spectacle","Intervenir plusieurs fois","Demander sa mutation d'urgence"],ans:2,pts:10,dif:1},
         {q:"DÉFI : Qui peut nommer 10 pays d'Europe en moins de 15 secondes ?",type:"vote",hint:"⏱️ Chronométrez et partagez dans le groupe !"},
-        {q:"L'École de Nancy du début XXe siècle travaillait dans quel style artistique ?",opts:["Cubisme","Art Nouveau","Baroque tardif"],ans:1,pts:10,dif:2},
+        {q:"La Place Stanislas est classée UNESCO depuis...",opts:["1952","1983","2001"],ans:1,pts:15,dif:3},
        ]},
-      {id:6,name:"Dijon",emoji:"🍷",lat:47.322,lng:5.041,radius:11000,theme:"Bourgogne",
+      {id:8,name:"Toul",emoji:"🏯",lat:48.676,lng:5.894,radius:8000,theme:"Vauban & Cathédrale",
        qs:[
-        {q:"Le Kir (inventé à Dijon) mélange vin blanc et...",opts:["Liqueur de cassis","Sirop de framboise","Crème de mûre"],ans:0,pts:10,dif:1},
-        {q:"La moutarde de Dijon — ses graines viennent principalement de...",opts:["Bourgogne (AOP stricte)","Canada à plus de 80% !","Alsace-Lorraine"],ans:1,pts:10,dif:2},
-        {q:"Kir ou Kir Royal à l'étape ce soir ? Vote inter-voitures !",type:"vote",hint:"🍾 Ou les deux pour les indécis ?"},
-        {q:"Le Duché de Bourgogne à son apogée comprenait...",opts:["La Flandre, l'Artois et la Hollande","La Provence et la Catalogne","La Bretagne et la Normandie"],ans:0,pts:15,dif:3},
+        {q:"La cathédrale Saint-Étienne de Toul est de style...",opts:["Roman","Gothique flamboyant","Renaissance"],ans:1,pts:10,dif:2},
+        {q:"Les Côtes de Toul produisent un vin rosé typique appelé...",opts:["Gris de Toul","Clairet de Toul","Rosé lorrain"],ans:0,pts:15,dif:3},
+        {q:"Célia est dans la voiture avec Adrien ET ses beaux-parents Anne & Pierre. Son niveau de confort ?",opts:["Parfait — ils sont adorables","Correct — elle fait bonne figure","Elle compte les km jusqu'à Chambéry"],ans:1,pts:10,dif:1},
+        {q:"Toul fait partie du Grand-Est. Cette région a été créée en quelle année ?",opts:["2010","2016","2020"],ans:1,pts:10,dif:2},
        ]},
-      {id:7,name:"Bourg-en-Bresse",emoji:"🐓",lat:46.205,lng:5.225,radius:9000,theme:"Ain & Volaille",
+      {id:9,name:"Langres",emoji:"✏️",lat:47.865,lng:5.334,radius:9000,theme:"Diderot & Fromage",
        qs:[
-        {q:"Le poulet de Bresse AOC a des pattes de quelle couleur ?",opts:["Roses","Jaunes","Grises comme monsieur tout-le-monde"],ans:1,pts:10,dif:1},
-        {q:"Son prix en boucherie est environ...",opts:["8 €/kg","25 €/kg","50 €/kg (plus cher que le veau)"],ans:2,pts:10,dif:2},
-        {q:"DÉFI : Meilleur cri de coq dans chaque voiture !",type:"vote",hint:"🐓 Filmez et partagez dans le groupe !"},
-        {q:"La Dombes (Ain) est parsemée de milliers d'étangs. On y élève surtout...",opts:["Carpes et grenouilles","Truites arc-en-ciel","Saumons de fontaine"],ans:0,pts:15,dif:3},
+        {q:"Langres est la ville natale de...",opts:["Voltaire","Denis Diderot","Jean-Jacques Rousseau"],ans:1,pts:10,dif:2},
+        {q:"Le fromage de Langres a une particularité unique : il a...",opts:["Une croûte orange et une cuvette sur le dessus","Une forme carrée","Une pâte persillée bleue"],ans:0,pts:10,dif:2},
+        {q:"Diderot est surtout connu pour avoir dirigé...",opts:["La Révolution française","L'Encyclopédie","L'Académie française"],ans:1,pts:10,dif:1},
+        {q:"Langres se situe sur un promontoire à environ...",opts:["300 m d'altitude","470 m d'altitude","620 m d'altitude"],ans:1,pts:15,dif:3},
+        {q:"Carine préfère un village authentique à une station. Langres c'est exactement son truc. Elle le sait ?",type:"vote",hint:"🏰 Carine — tu passerais le voyage ici ?"},
        ]},
-      {id:8,name:"Lyon",emoji:"🦁",lat:45.750,lng:4.850,radius:13000,theme:"Gastronomie & Histoire",
+      {id:10,name:"Dijon",emoji:"🍷",lat:47.322,lng:5.041,radius:11000,theme:"Bourgogne",
        qs:[
-        {q:"Les Traboules de Lyon servaient historiquement à...",opts:["Transporter la soie à l'abri de la pluie","Abriter les résistants WWII","Les deux selon les époques !"],ans:2,pts:10,dif:2},
-        {q:"Quel grand chef lyonnais est surnommé 'le pape de la gastronomie' ?",opts:["Alain Ducasse","Paul Bocuse","Joël Robuchon"],ans:1,pts:10,dif:1},
-        {q:"Lyon a été fondée par les Romains en 43 av. J-C sous le nom de...",opts:["Lugdunum","Lutetia Parisiorum","Viennensis Augusta"],ans:0,pts:15,dif:3},
-        {q:"Lyon se situe au confluent de...",opts:["Rhône et Isère","Saône et Rhône","Ain et Saône"],ans:1,pts:10,dif:1},
-        {q:"Quel plat lyonnais ce soir à Chambéry ?",type:"vote",hint:"🍷 Quenelle, andouillette, ou tablier de sapeur ? Votez !"},
+        {q:"Le Kir inventé à Dijon mélange vin blanc et...",opts:["Liqueur de cassis","Sirop de framboise","Crème de mûre"],ans:0,pts:10,dif:1},
+        {q:"La moutarde de Dijon — ses graines viennent principalement de...",opts:["Bourgogne AOP stricte","Canada à plus de 80% !","Alsace-Lorraine"],ans:1,pts:10,dif:2},
+        {q:"Kir ou Kir Royal ce soir ? Vote inter-voitures !",type:"vote",hint:"🍾 Carine & Régine décident pour tout le monde ?"},
+        {q:"Le Duché de Bourgogne à son apogée s'étendait jusqu'en...",opts:["Flandre Artois et Hollande","Provence et Catalogne","Bretagne et Normandie"],ans:0,pts:15,dif:3},
+        {q:"Le cépage roi des Bourgognes rouges ?",opts:["Merlot","Pinot Noir","Gamay"],ans:1,pts:10,dif:1},
        ]},
-      {id:9,name:"Chambéry",emoji:"⛰️",lat:45.571,lng:5.921,radius:9000,theme:"Savoie & Étape J1 !",
+      {id:11,name:"Lons-le-Saunier",emoji:"🎵",lat:46.675,lng:5.554,radius:10000,theme:"Jura & Marseillaise",
        qs:[
-        {q:"En quelle année la Savoie est-elle officiellement rattachée à la France ?",opts:["1792 (Révolution)","1860 (Napoléon III)","1918 (Traité de Versailles)"],ans:1,pts:10,dif:2},
+        {q:"Lons-le-Saunier est la ville natale de Rouget de Lisle, auteur de...",opts:["La Brabançonne","La Marseillaise","Le Chant du Départ"],ans:1,pts:10,dif:1},
+        {q:"Le vin jaune du Jura est vieilli minimum...",opts:["3 ans","6 ans et 3 mois","10 ans"],ans:1,pts:15,dif:3},
+        {q:"DÉFI MUSICAL : Chaque voiture chante le premier couplet de La Marseillaise !",type:"vote",hint:"🎵 On juge la qualité dans le groupe !"},
+        {q:"Le Comté, fromage AOP star du Jura, est affiné minimum...",opts:["4 mois","12 mois","24 mois"],ans:0,pts:10,dif:2},
+        {q:"Lons-le-Saunier se situe dans quel département ?",opts:["Le Doubs (25)","Le Jura (39)","L'Ain (01)"],ans:1,pts:10,dif:1},
+       ]},
+      {id:12,name:"Bourg-en-Bresse",emoji:"🐓",lat:46.205,lng:5.225,radius:9000,theme:"Ain & Volaille",
+       qs:[
+        {q:"Le poulet de Bresse AOC a des pattes de quelle couleur ?",opts:["Roses","Jaunes","Grises"],ans:1,pts:10,dif:1},
+        {q:"DÉFI : Meilleur cri de coq dans chaque voiture !",type:"vote",hint:"🐓 Filmez et partagez — le jury est impitoyable !"},
+        {q:"Chanel et Lily dans la neige — elles vont...",opts:["Adorer et refuser de rentrer","Hésiter prudemment","Rester collées contre Régine au chaud"],ans:0,pts:10,dif:1},
+        {q:"Le monastère de Brou à Bourg-en-Bresse est de style...",opts:["Roman bourguignon","Gothique flamboyant","Renaissance italienne"],ans:1,pts:15,dif:3},
+       ]},
+      {id:13,name:"Ambérieux-en-Bugey",emoji:"🍇",lat:45.873,lng:5.367,radius:8000,theme:"Bugey & Ain",
+       qs:[
+        {q:"Le Bugey est connu pour ses vins. Le cépage blanc principal est...",opts:["Chardonnay","Altesse (Roussette)","Aligoté"],ans:1,pts:15,dif:3},
+        {q:"L'Ain est le seul département français dont le nom fait... ?",opts:["Un seul chiffre","Une seule syllabe","Un seul mot de 3 lettres"],ans:2,pts:10,dif:2},
+        {q:"Adrien et Amélie ensemble sur une piste noire à La Rosière. Anne & Pierre sont...",opts:["Au bas de la piste qui applaudissent","Au bar avec une bière en attendant","En train d'appeler le PGHM préventivemen"],ans:2,pts:10,dif:1},
+        {q:"DÉFI : Chaque voiture estime à combien de km on est de Chambéry EN CE MOMENT ?",type:"vote",hint:"🗺️ Sans regarder le GPS — qui est le plus précis ?"},
+       ]},
+      {id:14,name:"Bourgoin-Jallieu",emoji:"🏭",lat:45.585,lng:5.276,radius:9000,theme:"Porte des Alpes",
+       qs:[
+        {q:"Bourgoin-Jallieu est célèbre pour son industrie textile historique. Quelle spécialité ?",opts:["La soierie lyonnaise","L'indiennage (tissus imprimés)","La dentelle au fuseau"],ans:1,pts:15,dif:3},
+        {q:"On approche de Chambéry ! Qui dans la voiture a le plus hâte d'arriver ?",type:"vote",hint:"😄 Sondage honnête dans chaque voiture !"},
+        {q:"L'Isle-d'Abeau proche de Bourgoin est connue pour...",opts:["Sa ville nouvelle des années 70","Son château médiéval","Son port fluvial sur le Rhône"],ans:0,pts:10,dif:3},
+        {q:"Quel massif montagneux va-t-on longer pour rejoindre Chambéry ?",opts:["Le Vercors","La Chartreuse","Le Belledonne"],ans:1,pts:10,dif:2},
+       ]},
+      {id:15,name:"Chambéry",emoji:"⛰️",lat:45.571,lng:5.921,radius:9000,theme:"Savoie & Étape J1 !",
+       qs:[
+        {q:"En quelle année la Savoie est-elle officiellement française ?",opts:["1792 (Révolution)","1860 (Napoléon III)","1918 (Versailles)"],ans:1,pts:10,dif:2},
         {q:"Lequel de ces fromages n'est PAS savoyard ?",opts:["Beaufort","Reblochon","Munster"],ans:2,pts:10,dif:2},
-        {q:"Qui est le plus impatient d'arriver aux pistes demain matin ?",type:"vote",hint:"🎿 Comparez vos niveaux de ski entre voitures !"},
-        {q:"Les 'Éléphants' de Chambéry (sa fontaine emblématique) viennent de...",opts:["L'Inde — ramenés par un général savoyard","D'Égypte via Napoléon","D'une légende celtique alpine"],ans:0,pts:15,dif:3},
+        {q:"Bilan Jour 1 : quelle voiture a été la plus sympa à suivre ?",type:"vote",hint:"🏆 Vote inter-voitures — soyez fair-play !"},
+        {q:"Les Éléphants de Chambéry viennent de...",opts:["L'Inde — ramenés par un général savoyard","D'Égypte via Napoléon","D'une légende celtique alpine"],ans:0,pts:15,dif:3},
+        {q:"Régine découvre la montagne enneigée. Sa réaction en arrivant à l'hôtel Campanile ?",opts:["Émerveillée malgré elle","Stoïque — elle s'y attendait","Elle cherche le bar le plus proche"],ans:2,pts:10,dif:1},
+        {q:"La Chartreuse Verte produite près de Chambéry titre...",opts:["43°","55°","69°"],ans:1,pts:10,dif:2},
        ]},
     ]},
+
   2:{from:"Chambéry",fromEmoji:"⛰️",to:"La Rosière",toEmoji:"🏁",
     zones:[
-      {id:10,name:"Albertville",emoji:"🏅",lat:45.675,lng:6.393,radius:9000,theme:"JO 1992",
+      {id:16,name:"Albertville",emoji:"🏅",lat:45.675,lng:6.393,radius:9000,theme:"JO 1992",
        qs:[
-        {q:"Albertville a accueilli les JO d'hiver en 1992. Combien de pays y ont participé ?",opts:["46 pays","64 pays","72 pays"],ans:1,pts:10,dif:2},
-        {q:"Quelle discipline des JO 1992 s'est déroulée à La Rosière même ?",opts:["La descente","Le super-G","Le combiné nordique"],ans:0,pts:15,dif:3},
-        {q:"La Tarentaise est célèbre pour...",opts:["Son fromage Beaufort et ses stations de ski","Ses mines de sel historiques","Son thermalisme réputé"],ans:0,pts:10,dif:1},
+        {q:"Albertville 1992 — la cérémonie d'ouverture a été mise en scène par...",opts:["Jean-Michel Jarre","Philippe Découflé","Michel Berger"],ans:1,pts:15,dif:3},
+        {q:"Quelle discipline des JO 1992 s'est déroulée à La Rosière même ?",opts:["La descente hommes","Le super-G","Le combiné nordique"],ans:0,pts:15,dif:3},
+        {q:"Luc chausse ses skis pour la première fois depuis longtemps. Le groupe lui donne...",opts:["Des encouragements chaleureux","Des conseils contradictoires","Un casque et une prière"],ans:2,pts:10,dif:1},
+        {q:"La Tarentaise est célèbre pour quel fromage ?",opts:["Le Beaufort","Le Reblochon","Le Comté"],ans:0,pts:10,dif:1},
        ]},
-      {id:11,name:"Moûtiers",emoji:"🏔️",lat:45.484,lng:6.530,radius:8000,theme:"Tarentaise",
+      {id:17,name:"Moûtiers",emoji:"🏔️",lat:45.484,lng:6.530,radius:8000,theme:"Tarentaise",
        qs:[
         {q:"Les Trois Vallées forment le plus grand domaine skiable du monde. Combien de km de pistes ?",opts:["320 km","600 km","815 km"],ans:1,pts:10,dif:2},
-        {q:"Val Thorens est la station d'altitude la plus élevée d'Europe. À quelle hauteur ?",opts:["2 300 m","2 600 m","3 200 m"],ans:1,pts:15,dif:3},
-        {q:"SONDAGE FINAL : Quel est le niveau de ski de chaque voiture ?",type:"vote",hint:"🎿 Débutant, intermédiaire, avancé ou télésiège-bar ? 😄"},
+        {q:"SONDAGE : Quel est le niveau de ski réel de chaque voiture ?",type:"vote",hint:"🎿 Gordon inclus — soyez honnêtes sur son niveau !"},
+        {q:"Val Thorens est la station la plus haute d'Europe à...",opts:["2 300 m","2 600 m","3 200 m"],ans:1,pts:15,dif:3},
+        {q:"Gordon débutant + Adrien + Amélie casse-cous sur les mêmes pistes. Le pisteur va...",opts:["Profiter du spectacle","Intervenir plusieurs fois","Demander sa mutation"],ans:2,pts:10,dif:1},
        ]},
-      {id:12,name:"Bourg-Saint-Maurice",emoji:"🚡",lat:45.618,lng:6.768,radius:8000,theme:"Portes des Alpes",
+      {id:18,name:"Bourg-Saint-Maurice",emoji:"🚡",lat:45.618,lng:6.768,radius:8000,theme:"Portes des Alpes",
        qs:[
-        {q:"Le tunnel du Mont-Blanc relie la France à...",opts:["La Suisse","L'Italie (Courmayeur)","L'Autriche (Innsbruck)"],ans:1,pts:10,dif:1},
-        {q:"Le col du Petit Saint-Bernard (proche de La Rosière) culmine à...",opts:["1 850 m","2 188 m","2 764 m"],ans:1,pts:10,dif:2},
-        {q:"Les Arcs, proche de Bourg-Saint-Maurice, est relié à quelle station italienne ?",opts:["La Thuile","Pila","Sestrières"],ans:0,pts:15,dif:3},
+        {q:"Le tunnel du Mont-Blanc relie la France à...",opts:["La Suisse","L'Italie (Courmayeur)","L'Autriche"],ans:1,pts:10,dif:1},
+        {q:"Le col du Petit Saint-Bernard proche de La Rosière culmine à...",opts:["1 850 m","2 188 m","2 764 m"],ans:1,pts:10,dif:2},
+        {q:"Carine préfère un village à une station. Régine n'aime pas la neige. Elles vont passer leurs journées à...",opts:["Explorer le village authentique","Au spa de la station","Comploter au chalet autour d'un vin chaud"],ans:2,pts:10,dif:1},
+        {q:"Les Arcs proches de Bourg-Saint-Maurice est relié à quelle station italienne ?",opts:["La Thuile","Pila","Sestrières"],ans:0,pts:15,dif:3},
        ]},
-      {id:13,name:"La Rosière",emoji:"🏁",lat:45.632,lng:6.858,radius:5000,theme:"ARRIVÉE ! 🏆",
+      {id:19,name:"La Rosière",emoji:"🏁",lat:45.632,lng:6.858,radius:5000,theme:"ARRIVÉE ! 🏆",
        qs:[
         {q:"La Rosière est reliée à quelle station italienne ?",opts:["Courmayeur","La Thuile","Cervinia"],ans:1,pts:10,dif:1},
         {q:"À quelle altitude se trouve La Rosière ?",opts:["1 200 m","1 850 m","2 200 m"],ans:1,pts:10,dif:1},
-        {q:"🏆 CLASSEMENT FINAL ! Chaque voiture annonce son score dans le groupe !",type:"vote",hint:"Le gagnant choisit le restau... ou paie une tournée ! 🍾"},
-        {q:"Le record du monde de vitesse en ski alpin est d'environ...",opts:["180 km/h","217 km/h","254 km/h"],ans:2,pts:15,dif:3},
+        {q:"🏆 CLASSEMENT FINAL ! Chaque voiture annonce son score total dans le groupe !",type:"vote",hint:"Le gagnant choisit le restau... ou paie une tournée ! 🍾"},
+        {q:"Luc réalise enfin son rêve de skier. Sa première réaction en voyant les pistes ?",opts:["Il pleure de joie","Il chausse ses skis immédiatement","Il appelle Régine pour lui montrer ce qu'elle rate"],ans:2,pts:10,dif:1},
+        {q:"La Rosière en ski alpin de vitesse — le record de la piste de descente est d'environ...",opts:["80 km/h","110 km/h","140 km/h"],ans:1,pts:15,dif:3},
+       ]},
+    ]},
+
+  3:{from:"La Rosière",fromEmoji:"🏁",to:"Sprimont",toEmoji:"🏠",
+    zones:[
+      {id:20,name:"La Rosière",emoji:"🏁",lat:45.632,lng:6.858,radius:5000,theme:"Bilan ski 🎿",
+       qs:[
+        {q:"BILAN : Combien de chutes pour Gordon sur l'ensemble du séjour ?",type:"vote",hint:"🏂 Gordon donne le chiffre EXACT — pas de triche !"},
+        {q:"Adrien ou Amélie — qui a été le plus casse-cou à La Rosière ?",type:"vote",hint:"🎿 Vote familial — Anne & Pierre tranchent !"},
+        {q:"Luc a retrouvé son niveau de ski après sa longue absence. Il se note...",type:"vote",hint:"⛷️ Luc donne sa propre note de 1 à 10 !"},
+        {q:"Célia après ce premier séjour à La Rosière est...",opts:["Convertie — elle revient l'an prochain avec des skis","Ravie mais piétonne à vie","Elle est encore en train de décongeler"],ans:0,pts:10,dif:1},
+        {q:"Chanel et Lily dans la neige ont été...",opts:["Folles de joie et incontrôlables","Prudentes et sages","L'une adorait l'autre pas — devinez laquelle"],ans:0,pts:10,dif:1},
+       ]},
+      {id:21,name:"Albertville",emoji:"🏅",lat:45.675,lng:6.393,radius:9000,theme:"Retour J3 ☀️",
+       qs:[
+        {q:"DÉFI RÉVEIL : Chaque voiture chante un couplet d'une chanson de ski ou de montagne !",type:"vote",hint:"🎵 Partagez dans le groupe — le jury est impitoyable !"},
+        {q:"Quel skieur français a remporté une médaille d'or aux JO d'Albertville 1992 ?",opts:["Franck Piccard","Luc Alphand","Jean-Luc Crétier"],ans:0,pts:15,dif:3},
+        {q:"SONDAGE : Quelle voiture a eu la meilleure ambiance musicale du séjour ?",type:"vote",hint:"🎶 Vote inter-voitures — objectivité requise !"},
+        {q:"Pour rester éveillé : nommez 5 chanteurs belges en 30 secondes !",type:"vote",hint:"🇧🇪 Stromae compte — partagez vos listes dans le groupe !"},
+       ]},
+      {id:22,name:"Chambéry",emoji:"⛰️",lat:45.571,lng:5.921,radius:9000,theme:"En route pour la maison !",
+       qs:[
+        {q:"DÉFI ANTI-SOMMEIL : Le co-pilote fait 10 jumping jacks imaginaires en voiture !",type:"vote",hint:"💪 Filmez et partagez — on veut voir ça !"},
+        {q:"Rousseau a séjourné à Chambéry. Il était surtout connu pour...",opts:["Ses théories politiques et l'Émile","Ses pièces de théâtre","Ses tableaux impressionnistes"],ans:0,pts:10,dif:2},
+        {q:"Bilan intendance : Carine et Régine ont assuré. Note sur 10 ?",type:"vote",hint:"🍳 Chaque voiture donne sa note — et une étoile Michelin ?"},
+        {q:"La Savoie produit quel apéritif anisé typique ?",opts:["Le Génépy","Le Pastis","L'Armagnac"],ans:0,pts:10,dif:2},
+       ]},
+      {id:23,name:"La Tour-du-Pin",emoji:"🗼",lat:45.564,lng:5.446,radius:8000,theme:"Retour Dauphiné",
+       qs:[
+        {q:"DÉFI : Chaque voiture invente le titre du film de ce voyage en 5 mots max !",type:"vote",hint:"🎬 Partagez dans le groupe — Philippe choisit le gagnant !"},
+        {q:"Le Dauphiné doit son nom à...",opts:["Un dauphin héraldique sur les armoiries","Le Dauphin héritier du trône de France","Une famille noble nommée Dauphin"],ans:0,pts:15,dif:3},
+        {q:"Qui dans le groupe a le plus dormi dans la voiture pendant ce retour ?",type:"vote",hint:"😴 Soyez honnêtes — les conducteurs ne comptent pas !"},
+       ]},
+      {id:24,name:"Bourgoin-Jallieu",emoji:"🏭",lat:45.585,lng:5.276,radius:9000,theme:"Retour en forme !",
+       qs:[
+        {q:"DÉFI CONCENTRATION : Sans chercher — citez les 5 départements qui bordent l'Isère !",type:"vote",hint:"🗺️ Chaque voiture essaie — partagez vos réponses !"},
+        {q:"Pour rester éveillé : le co-pilote doit faire deviner un film en le mimant !",type:"vote",hint:"🎭 Filmez la meilleure performance et partagez !"},
+        {q:"Gordon a survécu à son initiation au snowboard. Ses projets pour l'an prochain ?",opts:["Il reprend en piste verte","Il attaque directement la rouge","Il revient mais en ski cette fois"],ans:0,pts:10,dif:1},
+       ]},
+      {id:25,name:"Bourg-en-Bresse",emoji:"🐓",lat:46.205,lng:5.225,radius:9000,theme:"Retour — mi-chemin !",
+       qs:[
+        {q:"QUIZ RAPIDE ANTI-SOMNOLENCE : Quelle est la capitale de l'Australie ?",opts:["Sydney","Melbourne","Canberra"],ans:2,pts:10,dif:2},
+        {q:"Bilan honnête : qui a le plus profité du séjour selon vous ?",type:"vote",hint:"🏆 Luc qui réalisait son rêve est favori non ?"},
+        {q:"DÉFI : Chaque voiture propose le menu idéal du dîner de ce soir à la maison !",type:"vote",hint:"🍽️ Carine & Régine ont leur mot à dire !"},
+        {q:"La Bresse est aussi célèbre pour ses étangs. Combien en compte-t-elle environ ?",opts:["200","600","1 200"],ans:1,pts:15,dif:3},
+       ]},
+      {id:26,name:"Lons-le-Saunier",emoji:"🎵",lat:46.675,lng:5.554,radius:10000,theme:"Retour Jura",
+       qs:[
+        {q:"DÉFI MUSICAL : Chaque voiture chante La Marseillaise le plus fort possible !",type:"vote",hint:"🎵 Rouget de Lisle est né ici — rendons-lui hommage !"},
+        {q:"Pour rester éveillé : le conducteur choisit une station radio — les passagers doivent danser !",type:"vote",hint:"💃 Qui a les meilleurs moves ? Filmez !"},
+        {q:"Le vin jaune du Jura se déguste avec quel fromage local emblématique ?",opts:["Comté","Munster","Époisses"],ans:0,pts:10,dif:1},
+       ]},
+      {id:27,name:"Dijon",emoji:"🍷",lat:47.322,lng:5.041,radius:11000,theme:"Retour Bourgogne",
+       qs:[
+        {q:"DÉFI CONCENTRATION : Sans chercher — combien de régions compte la France métropolitaine ?",opts:["12","13","15"],ans:1,pts:10,dif:2},
+        {q:"À Dijon on s'arrêterait bien pour acheter... ?",type:"vote",hint:"🍷 Moutarde, Kir, Cassis, ou les trois ? Vote inter-voitures !"},
+        {q:"Qui dans le groupe est déjà en train de planifier le voyage de l'an prochain ?",type:"vote",hint:"🎿 Philippe a déjà une idée — non ?"},
+        {q:"Le terme 'Bourgogne' vient du peuple germanique des...",opts:["Burgondes","Burgares","Burgonions"],ans:0,pts:15,dif:3},
+       ]},
+      {id:28,name:"Langres",emoji:"✏️",lat:47.865,lng:5.334,radius:9000,theme:"Retour — on tient bon !",
+       qs:[
+        {q:"DÉFI ANTI-FATIGUE : Chaque co-pilote doit faire rire son conducteur en 30 secondes !",type:"vote",hint:"😂 La meilleure blague dans le groupe — Philippe juge !"},
+        {q:"On est à environ combien de km de Sprimont ? Estimez sans GPS !",type:"vote",hint:"🗺️ Chaque voiture donne son estimation — qui gagne ?"},
+        {q:"Diderot a dit : 'Il faut se laver de la honte...' Quelle est selon vous la honte de ce voyage ?",type:"vote",hint:"😄 Chaque voiture confesse une anecdote !"},
+       ]},
+      {id:29,name:"Nancy",emoji:"🏛️",lat:48.692,lng:6.184,radius:9000,theme:"Retour Grand-Est",
+       qs:[
+        {q:"QUIZ SURPRISE : Combien de personnes (humains) composaient le convoi ce week-end ?",opts:["9","11","13"],ans:1,pts:10,dif:1},
+        {q:"DÉFI FINAL : Chaque voiture propose une note globale sur 20 pour ce voyage !",type:"vote",hint:"📊 Philippe compile et annonce la moyenne dans le groupe !"},
+        {q:"Pour tenir jusqu'à Sprimont : le co-pilote doit inventer une comptine sur le voyage !",type:"vote",hint:"🎤 Créativité obligatoire — partagez dans le groupe !"},
+        {q:"La Place Stanislas s'appelle ainsi car Stanislas Leszczynski était...",opts:["Architecte baroque","Ex-roi de Pologne et duc de Lorraine","Général de Napoléon"],ans:1,pts:10,dif:2},
+       ]},
+      {id:30,name:"Thionville",emoji:"⚙️",lat:49.358,lng:6.167,radius:9000,theme:"Presque à la maison !",
+       qs:[
+        {q:"DÉFI ULTIME : Chaque voiture choisit sa chanson de victoire pour l'arrivée à Sprimont !",type:"vote",hint:"🎵 Préparez l'entrée triomphale — Philippe coordonne !"},
+        {q:"Bilan kilométrique : combien de km a-t-on parcouru sur l'ensemble du voyage aller-retour ?",opts:["~1 000 km","~1 400 km","~1 800 km"],ans:1,pts:10,dif:2},
+        {q:"L'an prochain même destination ou nouvelle aventure ?",type:"vote",hint:"🗳️ Vote inter-voitures — Philippe prend note des résultats !"},
+       ]},
+      {id:31,name:"Rodange",emoji:"🇱🇺",lat:49.548,lng:5.841,radius:10000,theme:"Dernière ligne droite !",
+       qs:[
+        {q:"QUIZ FINAL : Qui a marqué le plus de points sur l'ensemble des 3 jours ?",type:"vote",hint:"🏆 Chaque voiture annonce son score total dans le groupe !"},
+        {q:"On repasse par le Luxembourg. Combien de fois a-t-on traversé ce pays ce week-end ?",opts:["1 fois","2 fois","3 fois"],ans:1,pts:10,dif:1},
+        {q:"DÉFI ARRIVÉE : Quelle voiture arrive la première à Sprimont ?",type:"vote",hint:"🏁 Le pronostic — on vérifie dans quelques km !"},
+       ]},
+      {id:32,name:"Bastogne",emoji:"⭐",lat:50.001,lng:5.715,radius:10000,theme:"Avant-dernière étape !",
+       qs:[
+        {q:"On repasse par Bastogne ! La célèbre réplique de McAuliffe 'NUTS' signifie en argot américain...",opts:["Vous êtes fous !","Jamais — allez vous faire voir !","On capitule dans 24h"],ans:1,pts:10,dif:2},
+        {q:"DÉFI FINAL : Le co-pilote doit rester éveillé et faire une blague toutes les 5 minutes !",type:"vote",hint:"😂 Mission anti-somnolence — rapport dans le groupe !"},
+        {q:"Bilan général : ce voyage méritait-il toute cette organisation ?",opts:["Absolument — merci Philippe !","Oui mais on peut faire mieux","Philippe réserve déjà pour l'an prochain"],ans:2,pts:10,dif:1},
+       ]},
+      {id:33,name:"Sprimont",emoji:"🏠",lat:50.506,lng:5.666,radius:5000,theme:"ARRIVÉE RETOUR ! 🎉",
+       qs:[
+        {q:"🎉 ON EST ARRIVÉS ! Le grand vainqueur du quiz sur les 3 jours est...",type:"vote",hint:"🏆 Chaque voiture annonce son score TOTAL — Philippe proclame le champion !"},
+        {q:"Le mot de la fin : ce voyage était...",opts:["Parfait — on recommence l'an prochain !","Excellent — quelques ajustements","Mémorable — surtout grâce à Gordon 😂"],ans:0,pts:10,dif:1},
+        {q:"Prochaine destination pour le groupe : proposition de la voiture 1 ?",type:"vote",hint:"🗺️ Philippe a déjà des idées — on écoute !"},
        ]},
     ]}
 };
@@ -755,9 +912,10 @@ function renderLobbyPlayers(players){
 
 window.setDay=function(d){
   selectedDay=d;
-  const BASE='padding:13px 8px;border-radius:12px;font-weight:900;font-size:.88rem;line-height:1.5;border:2px solid #e91e8c;';
+  const BASE='padding:13px 8px;border-radius:12px;font-weight:900;font-size:.82rem;line-height:1.5;border:2px solid #e91e8c;';
   document.getElementById('btn-j1').style.cssText=BASE+`background:${d===1?'#e91e8c':'#ffb3d9'};color:${d===1?'#fff':'#8b0057'};`;
   document.getElementById('btn-j2').style.cssText=BASE+`background:${d===2?'#e91e8c':'#ffb3d9'};color:${d===2?'#fff':'#8b0057'};`;
+  document.getElementById('btn-j3').style.cssText=BASE+`background:${d===3?'#e91e8c':'#ffb3d9'};color:${d===3?'#fff':'#8b0057'};`;
 };
 setDay(1);
 
@@ -774,6 +932,8 @@ function beginDriving(){
   document.getElementById('d-carname').textContent=`${myCar.emoji} ${myNick}`;
   document.getElementById('d-from').textContent=`${day.fromEmoji} ${day.from}`;
   document.getElementById('d-to').textContent=`${day.toEmoji} ${day.to}`;
+  // Label jour retour
+  if(currentDay===3) document.getElementById('d-day-label').textContent='🏠 Retour';
   document.getElementById('d-score').innerHTML=fmtScore(myScore);
   renderRoute();
   screen('s-drive');
