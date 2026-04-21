@@ -16,7 +16,7 @@
 
   /* --- FOND D'ÉCRAN -------------------------------------------- */
   --theme-bg-color:      #daeeff;        /* couleur de fond (si pas de photo)  */
-  --theme-overlay:       rgba(255,255,255,0.0); /* calque sur la photo       */
+  --theme-overlay:       rgba(255,255,255,0.40); /* calque sur la photo       */
 
   /* --- TEXTES -------------------------------------------------- */
   --theme-text:          #0d1f35;        /* texte principal                    */
@@ -50,6 +50,35 @@
   /* --- DIVERS -------------------------------------------------- */
   --theme-purple:        #5530a0;        /* joker / surprise                   */
   --theme-score:         #1558a0;        /* couleur du score affiché           */
+
+  /* --- ÉCRAN QUESTION ----------------------------------------- */
+  --theme-zone-title:    #0d1f35;        /* nom de la ville (ex: "Metz")       */
+  --theme-zone-badge-bg: rgba(255,255,255,0.88); /* fond du badge thème        */
+  --theme-zone-badge-txt:#1558a0;        /* texte du badge thème               */
+  --theme-diff-easy:     #0a7a40;        /* couleur difficulté facile ⭐        */
+  --theme-diff-medium:   #c47000;        /* couleur difficulté moyen ⭐⭐       */
+  --theme-diff-hard:     #bf1e1e;        /* couleur difficulté difficile ⭐⭐⭐  */
+  --theme-vote-hint-bg:  rgba(224,112,0,0.10); /* fond hint question vote      */
+  --theme-vote-hint-txt: #c45c00;        /* texte hint question vote           */
+  --theme-timer-ok:      #0a7a40;        /* timer > 18s (vert)                 */
+  --theme-timer-warn:    #c47000;        /* timer 9-18s (orange)               */
+  --theme-timer-danger:  #bf1e1e;        /* timer < 9s (rouge)                 */
+  --theme-feedback-ok:   #0a7a40;        /* texte "Bravo !" bonne réponse      */
+  --theme-feedback-err:  #bf1e1e;        /* texte "Raté !" mauvaise réponse    */
+
+  /* --- ÉCRAN ROUTE -------------------------------------------- */
+  --theme-zone-done:     #0a7a40;        /* zone complétée (vert)              */
+  --theme-zone-next:     #e07000;        /* prochaine zone (orange)            */
+  --theme-zone-pending:  #5a7a9a;        /* zones à venir (gris)               */
+  --theme-gps-active-bg: rgba(10,122,64,0.12); /* fond bouton GPS actif        */
+  --theme-gps-active-txt:#0a7a40;        /* texte bouton GPS actif             */
+
+  /* --- LOBBY & CLASSEMENT ------------------------------------- */
+  --theme-connected:     #0a7a40;        /* point vert "connecté"              */
+  --theme-waiting:       #a8c8e8;        /* point gris "en attente"            */
+  --theme-rank-1-bg:     rgba(212,160,0,0.18);  /* fond ligne 1ère place      */
+  --theme-rank-2-bg:     rgba(136,136,136,0.15);/* fond ligne 2ème place      */
+  --theme-rank-3-bg:     rgba(160,82,10,0.15);  /* fond ligne 3ème place      */
 }
 /* ╚═══════════════════════════════════════════════════════════════╝ */
 
@@ -333,7 +362,7 @@ button { cursor:pointer; border:none; outline:none; }
     <p id="q-text" style="font-size:1rem;font-weight:700;line-height:1.55;"></p>
   </div>
 
-  <div id="q-vote-hint" style="display:none;background:rgba(240,192,64,.11);border:1px solid rgba(240,192,64,.38);border-radius:11px;padding:11px 13px;color:var(--theme-primary);font-size:.86rem;margin-bottom:12px;text-align:center;"></div>
+  <div id="q-vote-hint" style="display:none;background:var(--theme-vote-hint-bg);border:1px solid rgba(224,112,0,.35);border-radius:11px;padding:11px 13px;color:var(--theme-vote-hint-txt);font-size:.86rem;margin-bottom:12px;text-align:center;"></div>
   <div id="q-opts" style="display:flex;flex-direction:column;gap:9px;margin-bottom:12px;"></div>
   <div id="q-fb" style="display:none;text-align:center;font-weight:800;font-size:1rem;margin-bottom:12px;animation:fu .3s ease;"></div>
 
@@ -548,7 +577,7 @@ const CARS=[
   {id:"car4",name:"Team 4",emoji:"🚐",color:"#52c77a"},
 ];
 const DIFF_LBL=["","⭐ Facile","⭐⭐ Moyen","⭐⭐⭐ Difficile"];
-const DIFF_COL=["","var(--ok)","var(--gold)","var(--err)"];
+const DIFF_COL=["","var(--theme-diff-easy)","var(--theme-diff-medium)","var(--theme-diff-hard)"];
 const MEDALS=["🥇","🥈","🥉","4️⃣"];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
@@ -757,7 +786,7 @@ function renderRoute(){
       </div>
       <div style="padding-top:5px;opacity:${done?.6:isNext?1:.4};flex:1;display:flex;justify-content:space-between;">
         <div>
-          <div style="font-weight:800;font-size:.87rem;color:${isNext?'var(--theme-primary)':done?'var(--theme-ok)':'var(--theme-text)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
+          <div style="font-weight:800;font-size:.87rem;color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'var(--theme-text)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
           <div style="font-size:.68rem;color:var(--theme-text-muted);">${z.theme}</div>
         </div>
       </div>
@@ -935,9 +964,9 @@ function submitAnswer(idx,q,timeout=false){
   const fb=document.getElementById('q-fb');
   fb.style.display='block';
   if(isVote){fb.style.color='var(--theme-primary)';fb.textContent='💬 +5 pts — à discuter dans le groupe !';}
-  else if(timeout){fb.style.color='var(--theme-err)';fb.textContent='⏰ Temps écoulé !';shakeScreen();}
-  else if(correct){fb.style.color='var(--theme-ok)';fb.textContent=`🎉 Bravo ! +${pts} pts${bonus?' (⚡ bonus rapidité !)':''}`;setTimeout(launchConfetti,150);}
-  else{fb.style.color='var(--theme-err)';fb.textContent=`❌ Raté ! Réponse : ${(q.opts||[])[q.ans??q.answer]||''}`;shakeScreen();}
+  else if(timeout){fb.style.color='var(--theme-feedback-err)';fb.textContent='⏰ Temps écoulé !';shakeScreen();}
+  else if(correct){fb.style.color='var(--theme-feedback-ok)';fb.textContent=`🎉 Bravo ! +${pts} pts${bonus?' (⚡ bonus rapidité !)':''}`;setTimeout(launchConfetti,150);}
+  else{fb.style.color='var(--theme-feedback-err)';fb.textContent=`❌ Raté ! Réponse : ${(q.opts||[])[q.ans??q.answer]||''}`;shakeScreen();}
   if(!isVote){
     (q.opts||[]).forEach((_,i)=>{
       const b=document.getElementById('ans-'+i);if(!b)return;
