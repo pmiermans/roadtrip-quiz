@@ -637,6 +637,10 @@ function playHorn(){
 // ─── VALIDER & RETOUR À LA ROUTE ─────────────────────────────────────────────
 window.validateAndContinue=function(){
   document.getElementById('q-validate-btn').style.display='none';
+  // Marquer la zone comme complétée sur tous les appareils
+  if(currentQ && currentQ._zoneId && currentQ._zoneId !== 'joker'){
+    completedIds.add(Number(currentQ._zoneId));
+  }
   const zones=DAYS[currentDay].zones;
   const allDone=zones.every(z=>completedIds.has(z.id));
   update(ref(db,`games/${gameId}`),{state:'driving',currentQuestion:null,answers:{}});
@@ -905,8 +909,6 @@ function listenAnswers(){
 function showQuestion(q){
   if(jokerTimeout){clearTimeout(jokerTimeout);jokerTimeout=null;}
   answered=false;currentQ=q;
-  // Marquer la zone comme complétée sur tous les appareils (y compris via Firebase)
-  if(q._zoneId && q._zoneId !== 'joker') completedIds.add(q._zoneId);
   document.getElementById('q-tag').innerHTML=`<span>${q._zoneEmoji||'🃏'}</span><span>${q._zoneTheme||'Joker'}</span>`;
   document.getElementById('q-zone').textContent=q._zoneName||'Surprise';
   const diffEl=document.getElementById('q-diff');
