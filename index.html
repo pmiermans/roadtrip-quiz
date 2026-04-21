@@ -14,7 +14,1190 @@
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--snow);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 button,input{font-family:'Nunito',sans-serif;}
 input{outline:none;}
+button{cursor:pointer;border:none;outline:none;}<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#06111e"/>
+<title>Road Trip Quiz 🏔️</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#06111e;--card:#0d1e33;--card2:#112445;--gold:#f0c040;--blue:#5ba4e6;--snow:#e8f4fd;--muted:#6a8db0;--border:#1a3356;--ok:#52c77a;--err:#e85454;--purple:#a78bfa;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--snow);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+button,input{font-family:'Nunito',sans-serif;}
+input{outline:none;}
 button{cursor:pointer;border:none;outline:none;}
+.serif{font-family:'Libre Baskerville',serif;}
+
+@keyframes tw{from{opacity:.04}to{opacity:.5}}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pp{0%{transform:scale(.84);opacity:0}60%{transform:scale(1.03)}100%{transform:scale(1);opacity:1}}
+@keyframes pu{0%,100%{box-shadow:0 0 0 0 rgba(240,192,64,.4)}50%{box-shadow:0 0 0 10px rgba(240,192,64,0)}}
+@keyframes pu2{0%,100%{box-shadow:0 0 0 0 rgba(82,199,122,.35)}50%{box-shadow:0 0 0 8px rgba(82,199,122,0)}}
+@keyframes slide-up{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.screen{display:none;flex-direction:column;align-items:center;min-height:100vh;padding:16px 16px 40px;position:relative;}
+.screen.active{display:flex;}
+.content{position:relative;z-index:1;width:100%;max-width:400px;}
+.centered{justify-content:center;}
+
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.mts{position:fixed;bottom:0;left:0;right:0;pointer-events:none;opacity:.07;z-index:0;}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;}
+.card2{background:var(--card2);border:1px solid var(--border);border-radius:14px;}
+
+.btn{display:block;width:100%;padding:15px;border-radius:14px;font-size:1rem;font-weight:900;text-align:center;transition:opacity .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e8a020);color:#06111e;}
+.btn-gold:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
+.btn-ok{background:rgba(82,199,122,.18);border:1.5px solid var(--ok);color:var(--ok);}
+.btn-blue{background:rgba(91,164,230,.18);border:1.5px solid var(--blue);color:var(--blue);}
+
+.pbar{background:var(--border);border-radius:99px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:99px;transition:width .7s ease;}
+
+.sec{font-size:.7rem;color:var(--muted);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:5px 14px;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+
+.ans-btn{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:13px;color:var(--snow);font-size:.9rem;font-weight:700;text-align:left;display:flex;align-items:center;gap:10px;width:100%;transition:all .2s;}
+.ans-btn:disabled{cursor:default;}
+.ans-btn.correct{background:rgba(82,199,122,.18);border-color:var(--ok);color:var(--ok);}
+.ans-btn.wrong{background:rgba(232,84,84,.18);border-color:var(--err);color:rgba(232,84,84,.78);}
+.ans-btn.faded{color:var(--muted);}
+.ans-letter{min-width:26px;height:26px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:var(--bg);flex-shrink:0;}
+.ans-letter.ok{background:var(--ok);}
+.ans-letter.err{background:var(--err);}
+
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card2);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 20px;font-size:.85rem;font-weight:700;color:var(--snow);transition:transform .3s ease;z-index:9999;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+#sb-overlay{position:fixed;inset:0;background:rgba(6,17,30,.96);z-index:800;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;overflow-y:auto;}
+#sb-overlay.open{display:flex;}
+
+.player-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;}
+.player-row+.player-row{border-top:1px solid var(--border);}
+.rank-medal{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;flex-shrink:0;}
+
+.afu{animation:fu .45s ease both;}
+.app{animation:pp .35s ease both;}
+
+/* ── ANIMATIONS SPECTACULAIRES ── */
+@keyframes shake{0%,100%{transform:translateX(0)}10%{transform:translateX(-12px)}20%{transform:translateX(12px)}30%{transform:translateX(-10px)}40%{transform:translateX(10px)}50%{transform:translateX(-6px)}60%{transform:translateX(6px)}70%{transform:translateX(-3px)}80%{transform:translateX(3px)}90%{transform:translateX(-2px)}}
+@keyframes shake-screen{0%,100%{transform:translate(0,0)}15%{transform:translate(-8px,4px)}30%{transform:translate(8px,-4px)}45%{transform:translate(-6px,3px)}60%{transform:translate(6px,-3px)}75%{transform:translate(-3px,2px)}90%{transform:translate(3px,-2px)}}
+@keyframes confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes medal-drop{0%{transform:translateY(-60px) scale(0.3) rotate(-20deg);opacity:0}60%{transform:translateY(8px) scale(1.15) rotate(5deg);opacity:1}80%{transform:translateY(-4px) scale(0.95) rotate(-2deg)}100%{transform:translateY(0) scale(1) rotate(0);opacity:1}}
+@keyframes podium-rise{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+@keyframes firework-burst{0%{transform:scale(0);opacity:1}100%{transform:scale(1);opacity:0}}
+@keyframes firework-particle{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--fx),var(--fy)) scale(0);opacity:0}}
+@keyframes chambery-star{0%{transform:scale(0) rotate(0);opacity:0}50%{opacity:1}100%{transform:scale(1.8) rotate(360deg);opacity:0}}
+@keyframes winner-bounce{0%,100%{transform:translateY(0)}25%{transform:translateY(-18px)}50%{transform:translateY(0)}75%{transform:translateY(-9px)}}
+@keyframes flash-green{0%{background:var(--bg)}30%{background:rgba(82,199,122,.25)}100%{background:var(--bg)}}
+@keyframes flash-red{0%{background:var(--bg)}30%{background:rgba(232,84,84,.3)}100%{background:var(--bg)}}
+
+/* Confetti canvas overlay */
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9000;}
+
+
+/* Fireworks canvas */
+#fireworks-canvas{position:fixed;inset:0;pointer-events:none;z-index:9000;}
+
+/* Chambéry overlay */
+#chambery-overlay{position:fixed;inset:0;background:rgba(6,17,30,.95);z-index:900;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+#chambery-overlay.show{display:flex;}
+
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<svg class="mts" viewBox="0 0 400 100" preserveAspectRatio="none" height="160">
+  <polygon points="0,100 60,15 120,55 200,5 280,50 340,20 400,40 400,100" fill="white"/>
+  <polygon points="0,100 40,40 100,70 170,30 250,65 310,35 380,55 400,45 400,100" fill="white" opacity=".5"/>
+</svg>
+<div id="toast"></div>
+
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- FIREWORKS CANVAS -->
+<canvas id="fireworks-canvas"></canvas>
+
+<!-- CHAMBÉRY ARRIVAL OVERLAY -->
+<div id="chambery-overlay">
+  <div style="text-align:center;width:100%;max-width:380px;">
+    <div id="chambery-stars-container" style="position:relative;height:80px;margin-bottom:10px;"></div>
+    <div style="font-size:4rem;margin-bottom:10px;animation:winner-bounce 1s ease-in-out 3;">⛰️🌙</div>
+    <h2 class="serif" style="font-size:2rem;color:var(--gold);margin-bottom:8px;animation:fu .5s ease;">Chambéry !</h2>
+    <p style="color:var(--snow);font-size:1rem;font-weight:700;margin-bottom:6px;">Fin du Jour 1 — Bravo à tous ! 🎉</p>
+    <p style="color:var(--muted);font-size:.82rem;margin-bottom:24px;">À demain pour La Rosière 🎿</p>
+    <button class="btn btn-gold" onclick="closeChambereyOverlay()" style="font-size:1rem;">
+      🏨 Voir le classement Jour 1
+    </button>
+  </div>
+</div>
+
+
+<!-- SCOREBOARD OVERLAY -->
+<div id="sb-overlay">
+  <div style="width:100%;max-width:390px;padding-top:10px;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2.2rem;margin-bottom:4px;">🏆</div>
+      <div class="serif" style="font-size:1.4rem;color:var(--gold);">Classement en direct</div>
+    </div>
+    <div id="sb-list" style="margin-bottom:20px;display:flex;flex-direction:column;gap:10px;"></div>
+    <button class="btn btn-gold" onclick="closeSB()">← Retour au voyage</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN: JOIN ══ -->
+<div class="screen centered active" id="s-join">
+<div class="content afu">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="font-size:52px;margin-bottom:8px;">🏔️</div>
+    <h1 class="serif" style="font-size:1.85rem;color:var(--gold);line-height:1.2;margin-bottom:6px;">Road Trip Quiz</h1>
+    <p style="color:var(--muted);font-size:.82rem;">Sprimont → Chambéry → La Rosière</p>
+  </div>
+
+  <div class="sec">Votre véhicule</div>
+  <div id="car-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;"></div>
+
+  <input id="i-nick" placeholder="✏️ Surnom de votre équipe (optionnel)" style="width:100%;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--snow);font-size:.9rem;margin-bottom:14px;"/>
+
+  <div class="sec">Code de partie (identique pour les 4 voitures)</div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;">
+    <input id="i-gid" placeholder="ex: SKI2025" maxlength="8" oninput="this.value=this.value.toUpperCase()" style="flex:1;padding:11px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--snow);font-size:1.1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;"/>
+    <button onclick="genId()" style="padding:0 14px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--muted);font-size:.8rem;font-weight:800;">🎲</button>
+  </div>
+
+  <div class="card" style="margin-bottom:18px;font-size:.78rem;color:var(--muted);line-height:1.7;">
+    <strong style="color:var(--blue);">ℹ️ Comment ça marche ?</strong><br/>
+    Chaque co-pilote active le GPS → les questions se déclenchent <strong style="color:var(--snow);">automatiquement</strong> à l'approche de chaque ville, pour <strong style="color:var(--snow);">tout le monde en même temps</strong>. Les questions Joker tombent seules de façon aléatoire. Posez le téléphone, c'est tout ! 🎉
+  </div>
+
+  <button class="btn btn-gold" onclick="joinGame()">🚦 Rejoindre la partie</button>
+</div>
+</div>
+
+<!-- ══ SCREEN: LOBBY ══ -->
+<div class="screen centered" id="s-lobby">
+<div class="content">
+  <div style="text-align:center;margin-bottom:22px;" class="afu">
+    <div style="font-size:2.5rem;margin-bottom:6px;">🎮</div>
+    <h2 class="serif" style="font-size:1.4rem;color:var(--gold);margin-bottom:8px;">Salle d'attente</h2>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:5px 16px;">
+      <span style="font-size:.78rem;color:var(--muted);">Code :</span>
+      <span id="l-gid" style="font-weight:900;letter-spacing:2.5px;color:var(--snow);font-size:1rem;"></span>
+    </div>
+  </div>
+
+  <div class="sec">Voitures connectées</div>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;" id="l-players"></div>
+
+  <div id="l-status" style="background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.28);border-radius:12px;padding:12px 14px;margin-bottom:18px;font-size:.8rem;color:var(--gold);text-align:center;">
+    En attente des autres voitures... 🚗
+  </div>
+
+  <div class="sec">Quel jour sommes-nous ?</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;">
+    <button id="btn-j1" onclick="setDay(1)" style="padding:13px 8px;border-radius:12px;background:rgba(91,164,230,.18);border:2px solid var(--blue);color:var(--blue);font-weight:900;font-size:.88rem;line-height:1.5;">
+      📅 Jour 1<br/><span style="font-size:.7rem;font-weight:600;opacity:.8;">Sprimont → Chambéry</span>
+    </button>
+    <button id="btn-j2" onclick="setDay(2)" style="padding:13px 8px;border-radius:12px;background:var(--card);border:2px solid var(--border);color:var(--muted);font-weight:900;font-size:.88rem;line-height:1.5;">
+      📅 Jour 2<br/><span style="font-size:.7rem;font-weight:600;opacity:.8;">Chambéry → La Rosière</span>
+    </button>
+  </div>
+
+  <button class="btn btn-gold" onclick="startDriving()">🚦 Démarrer !</button>
+</div>
+</div>
+
+<!-- ══ SCREEN: DRIVING ══ -->
+<div class="screen" id="s-drive" style="padding-top:18px;">
+<div class="content">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div>
+      <div style="font-size:.66rem;color:var(--muted);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;" id="d-day-label">Jour 1</div>
+      <div class="serif" style="color:var(--gold);font-size:.98rem;" id="d-carname">🚙</div>
+    </div>
+    <div style="display:flex;gap:7px;align-items:center;">
+      <button onclick="openSB()" style="padding:7px 10px;border-radius:9px;background:rgba(240,192,64,.14);border:1px solid rgba(240,192,64,.35);color:var(--gold);font-size:.78rem;font-weight:800;">🏆 Scores</button>
+      <div style="text-align:right;">
+        <div style="font-size:.64rem;color:var(--muted);text-transform:uppercase;">Mon score</div>
+        <div id="d-score" style="font-size:1.55rem;font-weight:900;color:var(--gold);line-height:1;">0<span style="font-size:.7rem;color:var(--muted);"> pts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pbar" style="height:6px;margin-bottom:4px;"><div id="d-prog" class="pbar-fill" style="height:6px;background:linear-gradient(90deg,var(--blue),var(--gold));width:0%;"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:.66rem;color:var(--muted);margin-bottom:16px;">
+    <span id="d-from">🟢 Sprimont</span><span id="d-zone-count">0/9</span><span id="d-to">⛰️ Chambéry</span>
+  </div>
+
+  <div id="gps-card" class="card" style="margin-bottom:14px;transition:border-color .3s,box-shadow .3s;">
+    <div class="sec" style="margin-bottom:9px;">📡 Détection automatique</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button id="btn-gps" onclick="toggleGPS()" style="flex:1;padding:10px;border-radius:9px;background:rgba(91,164,230,.15);border:1.5px solid var(--blue);color:var(--blue);font-size:.8rem;font-weight:800;transition:all .3s;">📍 Activer le GPS</button>
+      <button onclick="simZone()" style="flex:1;padding:10px;border-radius:9px;background:rgba(240,192,64,.22);border:2px solid var(--gold);color:var(--gold);font-size:.82rem;font-weight:900;">⏩ Simuler zone</button>
+    </div>
+    <div id="gps-err" style="color:var(--err);font-size:.72rem;margin-top:7px;display:none;"></div>
+    <div id="gps-ok-msg" style="color:var(--ok);font-size:.72rem;margin-top:7px;display:none;">✅ GPS actif — questions automatiques activées</div>
+    <div style="margin-top:9px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:8px;padding:7px 10px;font-size:.72rem;color:var(--purple);text-align:center;">
+      🃏 Questions Joker : déclenchement automatique aléatoire en route
+    </div>
+  </div>
+
+  <div class="sec">🗺️ Itinéraire</div>
+  <div id="route-list" style="margin-bottom:20px;"></div>
+</div>
+</div>
+
+<!-- ══ SCREEN: QUESTION ══ -->
+<div class="screen centered" id="s-question" style="background:radial-gradient(ellipse at 50% 0%,#0e1f3a 0%,var(--bg) 65%);">
+<div class="content app">
+  <div style="text-align:center;margin-bottom:16px;">
+    <div id="q-tag" class="tag" style="margin:0 auto 9px;"></div>
+    <h2 id="q-zone" class="serif" style="font-size:1.4rem;color:var(--gold);margin-bottom:3px;"></h2>
+    <div id="q-diff" style="font-size:.7rem;font-weight:800;"></div>
+  </div>
+
+  <div id="q-timer-wrap" style="margin-bottom:13px;">
+    <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:4px;">
+      <span style="font-weight:800;letter-spacing:1px;">⏱ TEMPS</span>
+      <span id="q-tnum" style="font-weight:900;font-size:.82rem;color:var(--ok);"></span>
+    </div>
+    <div class="pbar" style="height:7px;"><div id="q-tbar" class="pbar-fill" style="height:7px;background:linear-gradient(90deg,var(--ok),var(--gold));width:100%;"></div></div>
+  </div>
+
+  <div class="card2" style="padding:18px 16px;margin-bottom:12px;text-align:center;">
+    <p id="q-text" style="font-size:1rem;font-weight:700;line-height:1.55;"></p>
+  </div>
+
+  <div id="q-vote-hint" style="display:none;background:rgba(240,192,64,.11);border:1px solid rgba(240,192,64,.38);border-radius:11px;padding:11px 13px;color:var(--gold);font-size:.86rem;margin-bottom:12px;text-align:center;"></div>
+  <div id="q-opts" style="display:flex;flex-direction:column;gap:9px;margin-bottom:12px;"></div>
+  <div id="q-fb" style="display:none;text-align:center;font-weight:800;font-size:1rem;margin-bottom:12px;animation:fu .3s ease;"></div>
+
+  <div style="margin-top:6px;margin-bottom:14px;">
+    <div style="font-size:.66rem;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;">👀 Qui a répondu ?</div>
+    <div id="q-who" style="display:flex;gap:7px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div id="q-validate-btn" style="display:none;">
+    <button class="btn btn-gold" onclick="validateAndContinue()" style="font-size:1rem;">
+      ✅ Valider &amp; retour à la route
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══ SCREEN: REVEAL ══ -->
+<div class="screen" id="s-reveal" style="padding-top:20px;background:radial-gradient(ellipse at 50% 0%,#0e1f3a 0%,var(--bg) 65%);">
+<div class="content afu">
+  <div style="text-align:center;margin-bottom:18px;">
+    <div style="font-size:.7rem;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">Résultats</div>
+    <div id="rv-title" class="serif" style="font-size:1.3rem;color:var(--gold);"></div>
+  </div>
+
+  <div id="rv-answer" class="card2" style="padding:14px;margin-bottom:16px;text-align:center;"></div>
+
+  <div class="sec">Réponses des voitures</div>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px;" id="rv-cars"></div>
+
+  <div class="sec">Classement après cette question</div>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:18px;" id="rv-rank"></div>
+
+  <div id="rv-continue" style="display:none;">
+    <button class="btn btn-gold" onclick="continueDriving()">▶ Continuer la route</button>
+  </div>
+  <div id="rv-wait" style="text-align:center;color:var(--muted);font-size:.82rem;padding:8px;animation:tw 1.5s infinite alternate;">⏳ Reprise dans quelques secondes...</div>
+</div>
+</div>
+
+<!-- ══ SCREEN: DAY END ══ -->
+<div class="screen centered" id="s-dayend">
+<div class="content afu">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="font-size:3.5rem;margin-bottom:8px;">⛰️🌙</div>
+    <h2 class="serif" style="color:var(--gold);font-size:1.55rem;margin-bottom:5px;">Étape à Chambéry !</h2>
+    <p style="color:var(--muted);font-size:.83rem;">Fin du Jour 1 — À demain pour La Rosière 🎿</p>
+  </div>
+  <div style="background:linear-gradient(135deg,#112240,#0d1e33);border-radius:16px;padding:18px;border:1px solid rgba(240,192,64,.3);margin-bottom:18px;" id="de-podium"></div>
+  <div class="sec">Classement Jour 1</div>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:18px;" id="de-rank"></div>
+  <div style="background:rgba(91,164,230,.12);border:1px solid rgba(91,164,230,.3);border-radius:11px;padding:12px;margin-bottom:18px;font-size:.8rem;color:var(--blue);text-align:center;">
+    📱 Partagez ce classement dans le groupe WhatsApp !<br/>
+    <strong>Demain matin → retour au lobby → Jour 2</strong>
+  </div>
+  <button class="btn btn-gold" onclick="goToLobby()">☀️ Retour au lobby (Jour 2)</button>
+</div>
+</div>
+
+<!-- ══ SCREEN: FINAL END ══ -->
+<div class="screen" id="s-end" style="padding-top:26px;">
+<div class="content afu">
+  <div style="text-align:center;margin-bottom:20px;">
+    <div style="font-size:3.5rem;margin-bottom:8px;">🏔️🎿🏆</div>
+    <h2 class="serif" style="color:var(--gold);font-size:1.5rem;margin-bottom:4px;">Bienvenue à La Rosière !</h2>
+    <p style="color:var(--muted);font-size:.82rem;">Fin du voyage — Classement final</p>
+  </div>
+  <div style="background:linear-gradient(135deg,#112240,#0d1e33);border-radius:16px;padding:18px;border:1px solid rgba(240,192,64,.35);margin-bottom:18px;box-shadow:0 0 30px rgba(240,192,64,.1);" id="end-podium"></div>
+  <div class="sec">Classement complet</div>
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:18px;" id="end-rank"></div>
+  <div style="background:rgba(91,164,230,.12);border:1px solid rgba(91,164,230,.3);border-radius:11px;padding:12px;margin-bottom:16px;font-size:.8rem;color:var(--blue);text-align:center;">
+    📱 Partagez ce classement dans le groupe WhatsApp !
+  </div>
+  <button class="btn btn-gold" onclick="location.reload()">🔄 Nouvelle partie</button>
+</div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,set,get,onValue,update,off,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ─── FIREBASE CONFIG (pré-configuré) ─────────────────────────────────────────
+const app = initializeApp({
+  apiKey: "AIzaSyBgWqA_ew2TQ2YXwOEOm1wfbyH6po0qR3w",
+  authDomain: "roadtrip-quiz-ccbbd.firebaseapp.com",
+  databaseURL: "https://roadtrip-quiz-ccbbd-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "roadtrip-quiz-ccbbd",
+});
+const db = getDatabase(app);
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const DAYS = {
+  1:{from:"Sprimont",fromEmoji:"🟢",to:"Chambéry",toEmoji:"⛰️",
+    zones:[
+      {id:1,name:"Sprimont",emoji:"🟢",lat:50.506,lng:5.666,radius:5000,theme:"Brise-glace 🎉",
+       qs:[
+        {q:"Qui dans le convoi a le plus de chances de s'endormir dans les 30 premières minutes ?",type:"vote",hint:"Soyez honnêtes 😴"},
+        {q:"Quelle voiture va faire le premier arrêt pipi selon vous ?",type:"vote",hint:"On vérifie dans 1h 😏"},
+        {q:"Combien de km nous séparent de La Rosière environ ?",opts:["~450 km","~590 km","~720 km"],ans:1,pts:10,dif:2},
+        {q:"La Belgique détient le record mondial du temps sans gouvernement. Combien de jours ?",opts:["194 jours","541 jours","696 jours !"],ans:2,pts:15,dif:3},
+       ]},
+      {id:2,name:"Rodange",emoji:"🇱🇺",lat:49.548,lng:5.841,radius:10000,theme:"Luxembourg 🇱🇺",
+       qs:[
+        {q:"Combien de langues officielles au Luxembourg ?",opts:["1 — le luxembourgeois","2 — français & allemand","3 — luxembourgeois, français & allemand"],ans:2,pts:10,dif:2},
+        {q:"Le Luxembourg est-il plus grand que la province de Liège ?",opts:["Oui, nettement plus grand","Non, plus petit","Quasiment identique (~2 600 km²)"],ans:2,pts:10,dif:2},
+        {q:"Pourquoi tant d'entreprises ont-elles leur siège au Luxembourg ?",type:"vote",hint:"Indice en F... comme fiscalité 😅 Débattez !"},
+        {q:"Le plat national luxembourgeois 'Judd mat Gaardebounen' est...",opts:["Du porc fumé aux fèves","Du lapin aux choux de Bruxelles","Du veau à la bière locale"],ans:0,pts:15,dif:3},
+       ]},
+      {id:3,name:"Thionville",emoji:"⚙️",lat:49.358,lng:6.167,radius:9000,theme:"Lorraine",
+       qs:[
+        {q:"La vraie Quiche Lorraine originale contient-elle du fromage ?",opts:["Oui, du gruyère évidemment !","Non — zéro fromage dans l'originale !","Seulement si c'est du comté"],ans:1,pts:10,dif:2},
+        {q:"Combien de fois a-t-on dit 'on est bientôt arrivés' depuis Sprimont ?",type:"vote",hint:"Soyez honnêtes 😂"},
+        {q:"Thionville s'appelait 'Diedenhofen' sous quelle occupation ?",opts:["Prussienne (après 1871)","Austro-hongroise","Napoléonienne"],ans:0,pts:15,dif:3},
+       ]},
+      {id:4,name:"Metz",emoji:"⛪",lat:49.119,lng:6.176,radius:9000,theme:"Cathédrale & Histoire",
+       qs:[
+        {q:"La cathédrale de Metz est surnommée 'La Lanterne de Dieu' car...",opts:["Ses 6 500 m² de vitraux — la plus vitrée du monde","Son clocher illuminé toute la nuit","Sa forme évoque une lanterne gothique"],ans:0,pts:10,dif:2},
+        {q:"Les Mirabelles de Lorraine, c'est...",opts:["Une petite prune jaune dorée","Une cerise rouge tardive","Une variété de poire miniature"],ans:0,pts:10,dif:1},
+        {q:"Niveau d'énergie dans votre voiture EN CE MOMENT (1=zombie, 5=trop de café) ?",type:"vote",hint:"☕ Comparez avec les autres voitures !"},
+        {q:"Metz fut allemande de 1871 à 1918 — soit pendant combien d'années ?",opts:["28 ans","47 ans","65 ans"],ans:1,pts:15,dif:3},
+       ]},
+      {id:5,name:"Nancy",emoji:"🏛️",lat:48.692,lng:6.184,radius:9000,theme:"Place Stanislas",
+       qs:[
+        {q:"Stanislas Leszczynski, dont la célèbre place porte le nom, était...",opts:["Un architecte baroque polonais","Un duc de Lorraine & ex-roi de Pologne","Le beau-père de Louis XV"],ans:1,pts:10,dif:2},
+        {q:"La Bergamote de Nancy utilise quel agrume ?",opts:["La bergamote (agrume de Calabre)","Le citron vert cubain","La mandarine de Corse"],ans:0,pts:10,dif:1},
+        {q:"DÉFI : Qui peut nommer 10 pays d'Europe en moins de 15 secondes ?",type:"vote",hint:"⏱️ Chronométrez et partagez dans le groupe !"},
+        {q:"L'École de Nancy du début XXe siècle travaillait dans quel style artistique ?",opts:["Cubisme","Art Nouveau","Baroque tardif"],ans:1,pts:10,dif:2},
+       ]},
+      {id:6,name:"Dijon",emoji:"🍷",lat:47.322,lng:5.041,radius:11000,theme:"Bourgogne",
+       qs:[
+        {q:"Le Kir (inventé à Dijon) mélange vin blanc et...",opts:["Liqueur de cassis","Sirop de framboise","Crème de mûre"],ans:0,pts:10,dif:1},
+        {q:"La moutarde de Dijon — ses graines viennent principalement de...",opts:["Bourgogne (AOP stricte)","Canada à plus de 80% !","Alsace-Lorraine"],ans:1,pts:10,dif:2},
+        {q:"Kir ou Kir Royal à l'étape ce soir ? Vote inter-voitures !",type:"vote",hint:"🍾 Ou les deux pour les indécis ?"},
+        {q:"Le Duché de Bourgogne à son apogée comprenait...",opts:["La Flandre, l'Artois et la Hollande","La Provence et la Catalogne","La Bretagne et la Normandie"],ans:0,pts:15,dif:3},
+       ]},
+      {id:7,name:"Bourg-en-Bresse",emoji:"🐓",lat:46.205,lng:5.225,radius:9000,theme:"Ain & Volaille",
+       qs:[
+        {q:"Le poulet de Bresse AOC a des pattes de quelle couleur ?",opts:["Roses","Jaunes","Grises comme monsieur tout-le-monde"],ans:1,pts:10,dif:1},
+        {q:"Son prix en boucherie est environ...",opts:["8 €/kg","25 €/kg","50 €/kg (plus cher que le veau)"],ans:2,pts:10,dif:2},
+        {q:"DÉFI : Meilleur cri de coq dans chaque voiture !",type:"vote",hint:"🐓 Filmez et partagez dans le groupe !"},
+        {q:"La Dombes (Ain) est parsemée de milliers d'étangs. On y élève surtout...",opts:["Carpes et grenouilles","Truites arc-en-ciel","Saumons de fontaine"],ans:0,pts:15,dif:3},
+       ]},
+      {id:8,name:"Lyon",emoji:"🦁",lat:45.750,lng:4.850,radius:13000,theme:"Gastronomie & Histoire",
+       qs:[
+        {q:"Les Traboules de Lyon servaient historiquement à...",opts:["Transporter la soie à l'abri de la pluie","Abriter les résistants WWII","Les deux selon les époques !"],ans:2,pts:10,dif:2},
+        {q:"Quel grand chef lyonnais est surnommé 'le pape de la gastronomie' ?",opts:["Alain Ducasse","Paul Bocuse","Joël Robuchon"],ans:1,pts:10,dif:1},
+        {q:"Lyon a été fondée par les Romains en 43 av. J-C sous le nom de...",opts:["Lugdunum","Lutetia Parisiorum","Viennensis Augusta"],ans:0,pts:15,dif:3},
+        {q:"Lyon se situe au confluent de...",opts:["Rhône et Isère","Saône et Rhône","Ain et Saône"],ans:1,pts:10,dif:1},
+        {q:"Quel plat lyonnais ce soir à Chambéry ?",type:"vote",hint:"🍷 Quenelle, andouillette, ou tablier de sapeur ? Votez !"},
+       ]},
+      {id:9,name:"Chambéry",emoji:"⛰️",lat:45.571,lng:5.921,radius:9000,theme:"Savoie & Étape J1 !",
+       qs:[
+        {q:"En quelle année la Savoie est-elle officiellement rattachée à la France ?",opts:["1792 (Révolution)","1860 (Napoléon III)","1918 (Traité de Versailles)"],ans:1,pts:10,dif:2},
+        {q:"Lequel de ces fromages n'est PAS savoyard ?",opts:["Beaufort","Reblochon","Munster"],ans:2,pts:10,dif:2},
+        {q:"Qui est le plus impatient d'arriver aux pistes demain matin ?",type:"vote",hint:"🎿 Comparez vos niveaux de ski entre voitures !"},
+        {q:"Les 'Éléphants' de Chambéry (sa fontaine emblématique) viennent de...",opts:["L'Inde — ramenés par un général savoyard","D'Égypte via Napoléon","D'une légende celtique alpine"],ans:0,pts:15,dif:3},
+       ]},
+    ]},
+  2:{from:"Chambéry",fromEmoji:"⛰️",to:"La Rosière",toEmoji:"🎿",
+    zones:[
+      {id:10,name:"Albertville",emoji:"🏅",lat:45.675,lng:6.393,radius:9000,theme:"JO 1992",
+       qs:[
+        {q:"Albertville a accueilli les JO d'hiver en 1992. Combien de pays y ont participé ?",opts:["46 pays","64 pays","72 pays"],ans:1,pts:10,dif:2},
+        {q:"Quelle discipline des JO 1992 s'est déroulée à La Rosière même ?",opts:["La descente","Le super-G","Le combiné nordique"],ans:0,pts:15,dif:3},
+        {q:"La Tarentaise est célèbre pour...",opts:["Son fromage Beaufort et ses stations de ski","Ses mines de sel historiques","Son thermalisme réputé"],ans:0,pts:10,dif:1},
+       ]},
+      {id:11,name:"Moûtiers",emoji:"🏔️",lat:45.484,lng:6.530,radius:8000,theme:"Tarentaise",
+       qs:[
+        {q:"Les Trois Vallées forment le plus grand domaine skiable du monde. Combien de km de pistes ?",opts:["320 km","600 km","815 km"],ans:1,pts:10,dif:2},
+        {q:"Val Thorens est la station d'altitude la plus élevée d'Europe. À quelle hauteur ?",opts:["2 300 m","2 600 m","3 200 m"],ans:1,pts:15,dif:3},
+        {q:"SONDAGE FINAL : Quel est le niveau de ski de chaque voiture ?",type:"vote",hint:"🎿 Débutant, intermédiaire, avancé ou télésiège-bar ? 😄"},
+       ]},
+      {id:12,name:"Bourg-Saint-Maurice",emoji:"🚡",lat:45.618,lng:6.768,radius:8000,theme:"Portes des Alpes",
+       qs:[
+        {q:"Le tunnel du Mont-Blanc relie la France à...",opts:["La Suisse","L'Italie (Courmayeur)","L'Autriche (Innsbruck)"],ans:1,pts:10,dif:1},
+        {q:"Le col du Petit Saint-Bernard (proche de La Rosière) culmine à...",opts:["1 850 m","2 188 m","2 764 m"],ans:1,pts:10,dif:2},
+        {q:"Les Arcs, proche de Bourg-Saint-Maurice, est relié à quelle station italienne ?",opts:["La Thuile","Pila","Sestrières"],ans:0,pts:15,dif:3},
+       ]},
+      {id:13,name:"La Rosière",emoji:"🎿",lat:45.632,lng:6.858,radius:5000,theme:"ARRIVÉE ! 🏆",
+       qs:[
+        {q:"La Rosière est reliée à quelle station italienne ?",opts:["Courmayeur","La Thuile","Cervinia"],ans:1,pts:10,dif:1},
+        {q:"À quelle altitude se trouve La Rosière ?",opts:["1 200 m","1 850 m","2 200 m"],ans:1,pts:10,dif:1},
+        {q:"🏆 CLASSEMENT FINAL ! Chaque voiture annonce son score dans le groupe !",type:"vote",hint:"Le gagnant choisit le restau... ou paie une tournée ! 🍾"},
+        {q:"Le record du monde de vitesse en ski alpin est d'environ...",opts:["180 km/h","217 km/h","254 km/h"],ans:2,pts:15,dif:3},
+       ]},
+    ]}
+};
+
+const JOKERS = [
+  {q:"DÉFI MUSICAL : Qui chante le plus faux dans le convoi ?",type:"vote",hint:"🎵 Démonstration dans chaque voiture — le groupe juge !"},
+  {q:"Quel pays européen possède le plus grand nombre de fromages ?",opts:["L'Italie (plus de 400)","La France (plus de 1 200 !)","La Suisse (plus de 450)"],ans:1,pts:10,dif:1},
+  {q:"Le mont Blanc culmine exactement à...",opts:["4 478 m","4 808 m","4 999 m"],ans:1,pts:10,dif:1},
+  {q:"Combien d'étoiles sur le drapeau européen et pourquoi ?",opts:["12 pour les membres fondateurs","12 symbole de complétude/perfection","Une par État membre actuel"],ans:1,pts:15,dif:3},
+  {q:"SONDAGE : Quelle voiture a la meilleure playlist ?",type:"vote",hint:"🎶 Chaque voiture partage son morceau du moment dans le groupe !"},
+  {q:"L'animal le plus rapide du monde en pointe de vitesse ?",opts:["Le guépard (120 km/h)","L'aigle pèlerin en piqué (389 km/h)","Le voilier bleu (130 km/h)"],ans:1,pts:10,dif:2},
+  {q:"DÉFI VITESSE : 10 capitales européennes en 20 secondes !",type:"vote",hint:"⏱️ Chaque co-pilote essaie — partagez le résultat dans le groupe !"},
+  {q:"La France est le pays le plus visité du monde. Combien de touristes/an ?",opts:["55 millions","89 millions","100 millions"],ans:1,pts:10,dif:2},
+  {q:"Quel est le 2e plus haut sommet des Alpes après le Mont-Blanc ?",opts:["La Dent Blanche","Le Monte Rosa","L'Eiger"],ans:1,pts:10,dif:2},
+  {q:"La Suisse a-t-elle une capitale officielle ?",opts:["Oui — Berne (ville fédérale)","Oui — Genève (siège de l'ONU)","Non — pas de capitale officielle"],ans:0,pts:10,dif:2},
+  {q:"DÉFI PHYSIQUE : 10 rotations d'épaules par co-pilote. Qui le fait le plus gracieusement ?",type:"vote",hint:"💆 Hygiène de route obligatoire ! Le groupe juge."},
+  {q:"En quelle année les JO d'hiver ont-ils eu lieu à Grenoble ?",opts:["1960","1968","1976"],ans:1,pts:10,dif:2},
+  {q:"Combien de pays sans accès à la mer en Europe ?",opts:["3 pays","5 pays (dont Vatican et Suisse)","8 pays"],ans:1,pts:10,dif:2},
+  {q:"Sans chercher : dans quel sens tourne l'aiguille des montres vue du pôle Sud ?",opts:["Horaire (comme chez nous)","Antihoraire","Ça dépend du modèle"],ans:1,pts:15,dif:3},
+  {q:"QUESTION BONUS : Quel est le vrai prénom du Père Noël en Finlande ?",opts:["Joulupukki (le bouc de Noël !)","Santa Claus","Nikolaus"],ans:0,pts:15,dif:3},
+];
+
+const CARS=[
+  {id:"car1",name:"Voiture 1",emoji:"🚙",color:"#5ba4e6"},
+  {id:"car2",name:"Voiture 2",emoji:"🚗",color:"#f0c040"},
+  {id:"car3",name:"Voiture 3",emoji:"🚕",color:"#e85454"},
+  {id:"car4",name:"Voiture 4",emoji:"🚐",color:"#52c77a"},
+];
+const DIFF_LBL=["","⭐ Facile","⭐⭐ Moyen","⭐⭐⭐ Difficile"];
+const DIFF_COL=["","var(--ok)","var(--gold)","var(--err)"];
+const MEDALS=["🥇","🥈","🥉","4️⃣"];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let gameId=null,myCar=null,myNick="";
+let currentDay=1,selectedDay=1;
+let gpsWatch=null,gpsActive=false;
+let timerInterval=null,timerLeft=0;
+let myScore=0,completedIds=new Set();
+let answered=false,currentQ=null;
+let jokerTimeout=null;
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function gd(a,b,c,d){const R=6371e3,f1=a*Math.PI/180,f2=c*Math.PI/180,df=(c-a)*Math.PI/180,dl=(d-b)*Math.PI/180,x=Math.sin(df/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function shuffle(arr){return[...arr].sort(()=>Math.random()-.5);}
+function pickQs(zone,n=3){return shuffle(zone.qs).slice(0,Math.min(n,zone.qs.length));}
+function fmtScore(s){return`${s}<span style="font-size:.7rem;color:var(--muted);"> pts</span>`;}
+
+function toast(msg,dur=2800){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+function screen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ─── KLAXON "VIEILLE VOITURE" ─────────────────────────────────────────────────
+function playHorn(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const notes=[
+      {f:280,t:0,d:0.18},{f:220,t:0.22,d:0.22},
+      {f:280,t:0.50,d:0.18},{f:220,t:0.72,d:0.28},
+    ];
+    notes.forEach(({f,t,d})=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      const wave=ctx.createWaveShaper();
+      const curve=new Float32Array(256);
+      for(let i=0;i<256;i++){const x=i*2/256-1;curve[i]=x*(Math.abs(x)<.5?2:1/(2*Math.abs(x)));}
+      wave.curve=curve;
+      osc.connect(wave);wave.connect(gain);gain.connect(ctx.destination);
+      osc.type='sawtooth';
+      osc.frequency.setValueAtTime(f,ctx.currentTime+t);
+      osc.frequency.linearRampToValueAtTime(f*0.96,ctx.currentTime+t+d);
+      gain.gain.setValueAtTime(0,ctx.currentTime+t);
+      gain.gain.linearRampToValueAtTime(0.35,ctx.currentTime+t+0.03);
+      gain.gain.setValueAtTime(0.35,ctx.currentTime+t+d-0.04);
+      gain.gain.linearRampToValueAtTime(0,ctx.currentTime+t+d);
+      osc.start(ctx.currentTime+t);
+      osc.stop(ctx.currentTime+t+d+0.05);
+    });
+  }catch(e){console.log('Audio indisponible');}
+}
+
+// ─── VALIDER & RETOUR À LA ROUTE ─────────────────────────────────────────────
+window.validateAndContinue=function(){
+  document.getElementById('q-validate-btn').style.display='none';
+  const zones=DAYS[currentDay].zones;
+  const allDone=zones.every(z=>completedIds.has(z.id));
+  update(ref(db,`games/${gameId}`),{state:'driving',currentQuestion:null,answers:{}});
+  answered=false;
+  if(allDone){currentDay===1?showChambereyOverlay():showFinalEndWithFireworks();return;}
+  screen('s-drive');
+  renderRoute();
+  scheduleJoker();
+};
+
+// ─── STARS ───────────────────────────────────────────────────────────────────
+(()=>{
+  const c=document.getElementById('stars');
+  for(let i=0;i<35;i++){
+    const s=document.createElement('div');s.className='star';
+    s.style.cssText=`position:absolute;border-radius:50%;background:white;width:${(i%3)+1}px;height:${(i%3)+1}px;opacity:${.07+(i%5)*.07};left:${(i*137.5+23)%100}%;top:${(i*97.3+11)%90}%;animation:tw ${2+(i%4)}s infinite alternate;`;
+    c.appendChild(s);
+  }
+})();
+
+// ─── CAR GRID ─────────────────────────────────────────────────────────────────
+(()=>{
+  const g=document.getElementById('car-grid');
+  CARS.forEach(c=>{
+    const b=document.createElement('button');
+    b.id='cb-'+c.id;
+    b.style.cssText='background:var(--card);border:2px solid var(--border);border-radius:14px;padding:13px 8px;color:var(--snow);display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .2s;';
+    b.innerHTML=`<span style="font-size:1.85rem">${c.emoji}</span><span style="font-size:.78rem;font-weight:800;color:var(--muted)">${c.name}</span>`;
+    b.onclick=()=>selectCar(c.id);
+    g.appendChild(b);
+  });
+})();
+
+window.selectCar=function(id){
+  myCar=CARS.find(c=>c.id===id);
+  CARS.forEach(c=>{
+    const b=document.getElementById('cb-'+c.id);
+    if(c.id===id){b.style.background=myCar.color+'28';b.style.borderColor=myCar.color;b.style.boxShadow=`0 0 14px ${myCar.color}44`;b.querySelector('span:last-child').style.color=myCar.color;}
+    else{b.style.background='var(--card)';b.style.borderColor='var(--border)';b.style.boxShadow='none';b.querySelector('span:last-child').style.color='var(--muted)';}
+  });
+};
+
+window.genId=function(){
+  const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let id='';for(let i=0;i<6;i++)id+=ch[Math.floor(Math.random()*ch.length)];
+  document.getElementById('i-gid').value=id;
+};
+
+// ─── JOIN ─────────────────────────────────────────────────────────────────────
+window.joinGame=function(){
+  if(!myCar){toast('⚠️ Choisissez votre voiture !');return;}
+  const gid=document.getElementById('i-gid').value.trim().toUpperCase();
+  if(!gid){toast('⚠️ Entrez un code de partie');return;}
+  gameId=gid;
+  myNick=document.getElementById('i-nick').value.trim()||myCar.name;
+  const playerData={name:myNick,emoji:myCar.emoji,color:myCar.color,score:0,online:true};
+  update(ref(db,`games/${gameId}/players/${myCar.id}`),playerData)
+    .then(()=>{showLobby();})
+    .catch(e=>toast('❌ Erreur : '+e.message));
+};
+
+function showLobby(){
+  document.getElementById('l-gid').textContent=gameId;
+  screen('s-lobby');
+  listenLobby();
+}
+
+function listenLobby(){
+  onValue(ref(db,`games/${gameId}/players`),snap=>{
+    renderLobbyPlayers(snap.val()||{});
+  });
+  onValue(ref(db,`games/${gameId}/state`),snap=>{
+    const st=snap.val();
+    if(st==='driving')beginDriving();
+    else if(st==='question'){
+      get(ref(db,`games/${gameId}/currentQuestion`)).then(qs=>{if(qs.val())showQuestion(qs.val());});
+    }
+  });
+}
+
+function renderLobbyPlayers(players){
+  const el=document.getElementById('l-players');
+  el.innerHTML=CARS.map((c,i)=>{
+    const p=players[c.id];
+    return`<div class="player-row" style="animation:slide-up .3s ${i*.07}s ease both;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <span style="font-size:1.4rem">${c.emoji}</span>
+        <div>
+          <div style="font-weight:800;font-size:.88rem;color:${p?'var(--snow)':'var(--muted)'};">${p?p.name:c.name}</div>
+          <div style="font-size:.7rem;color:var(--muted);">${c.name}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:${p?'var(--ok)':'var(--border)'};${p?'animation:pu2 2s infinite':''}"></div>
+        <span style="font-size:.75rem;color:${p?'var(--ok)':'var(--muted)'};">${p?'Connecté':'En attente'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  const n=Object.keys(players).length;
+  document.getElementById('l-status').textContent=n>=4?'🎉 Tout le monde est là ! Choisissez le jour et démarrez.':`${n}/4 voitures connectées...`;
+}
+
+window.setDay=function(d){
+  selectedDay=d;
+  document.getElementById('btn-j1').style.cssText=`padding:13px 8px;border-radius:12px;font-weight:900;font-size:.88rem;line-height:1.5;background:${d===1?'rgba(91,164,230,.22)':'var(--card)'};border:2px solid ${d===1?'var(--blue)':'var(--border)'};color:${d===1?'var(--blue)':'var(--muted)'};`;
+  document.getElementById('btn-j2').style.cssText=`padding:13px 8px;border-radius:12px;font-weight:900;font-size:.88rem;line-height:1.5;background:${d===2?'rgba(91,164,230,.22)':'var(--card)'};border:2px solid ${d===2?'var(--blue)':'var(--border)'};color:${d===2?'var(--blue)':'var(--muted)'};`;
+};
+setDay(1);
+
+window.startDriving=function(){
+  currentDay=selectedDay;
+  update(ref(db,`games/${gameId}`),{state:'driving',day:currentDay,completedZones:{},answers:{},currentQuestion:null})
+    .then(()=>beginDriving());
+};
+
+// ─── DRIVING ─────────────────────────────────────────────────────────────────
+function beginDriving(){
+  const day=DAYS[currentDay];
+  document.getElementById('d-day-label').textContent=`Jour ${currentDay}`;
+  document.getElementById('d-carname').textContent=`${myCar.emoji} ${myNick}`;
+  document.getElementById('d-from').textContent=`${day.fromEmoji} ${day.from}`;
+  document.getElementById('d-to').textContent=`${day.toEmoji} ${day.to}`;
+  document.getElementById('d-score').innerHTML=fmtScore(myScore);
+  renderRoute();
+  screen('s-drive');
+  listenForQuestion();
+  listenScores();
+  scheduleJoker();
+}
+
+function renderRoute(){
+  const zones=DAYS[currentDay].zones;
+  const prog=(completedIds.size/zones.length)*100;
+  document.getElementById('d-prog').style.width=prog+'%';
+  document.getElementById('d-zone-count').textContent=`${completedIds.size}/${zones.length}`;
+  document.getElementById('route-list').innerHTML=zones.map((z,i)=>{
+    const done=completedIds.has(z.id);
+    const isNext=i===zones.findIndex(x=>!completedIds.has(x.id));
+    return`<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:7px;">
+      <div style="display:flex;flex-direction:column;align-items:center;min-width:28px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:${done?'var(--ok)':isNext?'var(--gold)':'var(--card)'};border:2px solid ${done?'var(--ok)':isNext?'var(--gold)':'var(--border)'};display:flex;align-items:center;justify-content:center;font-size:${done?'.75rem':'.9rem'};color:${done||isNext?'var(--bg)':'var(--muted)'};font-weight:900;${isNext?'animation:pu 2s infinite':''};">
+          ${done?'✓':z.emoji}
+        </div>
+        ${i<zones.length-1?`<div style="width:2px;height:22px;background:${done?'rgba(82,199,122,.4)':'var(--border)'};margin-top:2px;"></div>`:''}
+      </div>
+      <div style="padding-top:5px;opacity:${done?.6:isNext?1:.4};flex:1;display:flex;justify-content:space-between;">
+        <div>
+          <div style="font-weight:800;font-size:.87rem;color:${isNext?'var(--gold)':done?'var(--ok)':'var(--snow)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--gold);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
+          <div style="font-size:.68rem;color:var(--muted);">${z.theme}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── GPS ─────────────────────────────────────────────────────────────────────
+window.toggleGPS=function(){gpsActive?stopGPS():startGPS();};
+
+function startGPS(){
+  if(!navigator.geolocation){showGPSErr('GPS non disponible');return;}
+  document.getElementById('gps-err').style.display='none';
+  gpsWatch=navigator.geolocation.watchPosition(
+    ({coords:{latitude:la,longitude:lo}})=>{
+      DAYS[currentDay].zones.forEach(z=>{
+        if(!completedIds.has(z.id)&&gd(la,lo,z.lat,z.lng)<=z.radius)triggerZone(z);
+      });
+    },
+    e=>{showGPSErr('Erreur GPS : '+e.message);stopGPS();},
+    {enableHighAccuracy:true,maximumAge:15000,timeout:10000}
+  );
+  gpsActive=true;
+  const btn=document.getElementById('btn-gps');
+  btn.textContent='🟢 GPS Actif';
+  btn.style.cssText='flex:1;padding:10px;border-radius:9px;background:rgba(82,199,122,.18);border:1.5px solid var(--ok);color:var(--ok);font-size:.8rem;font-weight:800;animation:pu2 2s infinite;';
+  document.getElementById('gps-ok-msg').style.display='block';
+}
+
+function stopGPS(){
+  if(gpsWatch)navigator.geolocation.clearWatch(gpsWatch);
+  gpsActive=false;
+  const btn=document.getElementById('btn-gps');
+  btn.textContent='📍 Activer le GPS';
+  btn.style.cssText='flex:1;padding:10px;border-radius:9px;background:rgba(91,164,230,.15);border:1.5px solid var(--blue);color:var(--blue);font-size:.8rem;font-weight:800;';
+  document.getElementById('gps-ok-msg').style.display='none';
+}
+
+function showGPSErr(msg){const e=document.getElementById('gps-err');e.textContent=msg;e.style.display='block';}
+
+window.simZone=function(){
+  // Cache le bonhomme qui dort si visible
+  const next=DAYS[currentDay].zones.find(z=>!completedIds.has(z.id));
+  if(next){
+    triggerZone(next);
+  } else {
+    toast('✅ Toutes les zones de ce jour sont complétées !');
+  }
+};
+
+// ─── ZONE TRIGGER ─────────────────────────────────────────────────────────────
+function triggerZone(zone){
+  if(completedIds.has(zone.id))return;
+  completedIds.add(zone.id);
+  const q={...rnd(pickQs(zone,3)),_zoneName:zone.name,_zoneEmoji:zone.emoji,_zoneTheme:zone.theme,_zoneId:zone.id};
+  pushQuestion(q);
+}
+
+function triggerJokerInternal(){
+  const j=rnd(JOKERS);
+  const q={...j,_zoneName:'Question Surprise 🃏',_zoneEmoji:'🃏',_zoneTheme:'Joker !',_zoneId:'joker'};
+  pushQuestion(q);
+}
+
+function pushQuestion(q){
+  currentQ=q;
+  update(ref(db,`games/${gameId}`),{
+    state:'question',
+    currentQuestion:{...q,startedAt:Date.now()},
+    answers:{},
+  });
+}
+
+// ─── FIREBASE LISTENERS ───────────────────────────────────────────────────────
+function listenForQuestion(){
+  onValue(ref(db,`games/${gameId}/currentQuestion`),snap=>{
+    const q=snap.val();
+    if(q&&q.q&&!answered)showQuestion(q);
+  });
+  onValue(ref(db,`games/${gameId}/state`),snap=>{
+    const st=snap.val();
+    if(st==='driving'&&document.getElementById('s-reveal').classList.contains('active')){
+      screen('s-drive');renderRoute();scheduleJoker();
+    }
+  });
+}
+
+function listenScores(){
+  onValue(ref(db,`games/${gameId}/scores`),snap=>{
+    const s=snap.val()||{};
+    myScore=s[myCar.id]||myScore;
+    document.getElementById('d-score').innerHTML=fmtScore(myScore);
+  });
+}
+
+function listenAnswers(){
+  onValue(ref(db,`games/${gameId}/answers`),snap=>{
+    const ans=snap.val()||{};
+    renderWho(ans);
+    if(CARS.every(c=>ans[c.id]!==undefined)){
+      get(ref(db,`games/${gameId}/scores`)).then(ss=>showReveal(currentQ,ans,ss.val()||{}));
+    }
+  });
+}
+
+// ─── SHOW QUESTION ────────────────────────────────────────────────────────────
+function showQuestion(q){
+  if(jokerTimeout){clearTimeout(jokerTimeout);jokerTimeout=null;}
+  answered=false;currentQ=q;
+  document.getElementById('q-tag').innerHTML=`<span>${q._zoneEmoji||'🃏'}</span><span>${q._zoneTheme||'Joker'}</span>`;
+  document.getElementById('q-zone').textContent=q._zoneName||'Surprise';
+  const diffEl=document.getElementById('q-diff');
+  diffEl.style.display=q.dif?'block':'none';
+  if(q.dif)diffEl.innerHTML=`<span style="color:${DIFF_COL[q.dif]}">${DIFF_LBL[q.dif]}</span> · ${q.pts} pts${q.pts===15?' 🔥':''}`;
+  const isVote=q.type==='vote';
+  document.getElementById('q-timer-wrap').style.display=isVote?'none':'block';
+  document.getElementById('q-vote-hint').style.display=isVote?'block':'none';
+  if(isVote)document.getElementById('q-vote-hint').textContent=q.hint||'';
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-fb').style.display='none';
+  document.getElementById('q-who').innerHTML='';
+  const optsEl=document.getElementById('q-opts');
+  optsEl.innerHTML='';
+  if(isVote){
+    const btn=document.createElement('button');
+    btn.className='ans-btn';
+    btn.innerHTML=`<span class="ans-letter">✓</span>C'est noté — on en parle dans le groupe !`;
+    btn.onclick=()=>submitAnswer(-1,q);
+    optsEl.appendChild(btn);
+  } else {
+    (q.opts||[]).forEach((opt,i)=>{
+      const btn=document.createElement('button');
+      btn.className='ans-btn';btn.id='ans-'+i;
+      btn.innerHTML=`<span class="ans-letter">${String.fromCharCode(65+i)}</span>${opt}`;
+      btn.onclick=()=>submitAnswer(i,q);
+      optsEl.appendChild(btn);
+    });
+    startTimer(30,q);
+  }
+  document.getElementById('q-validate-btn').style.display='none';
+  screen('s-question');
+  // Klaxon à l'arrivée de la question 📯
+  setTimeout(playHorn, 300);
+}
+
+function startTimer(sec,q){
+  if(timerInterval)clearInterval(timerInterval);
+  timerLeft=sec;
+  const tnum=document.getElementById('q-tnum');
+  const tbar=document.getElementById('q-tbar');
+  tnum.textContent=timerLeft+'s';tnum.style.color='var(--ok)';
+  tbar.style.width='100%';tbar.style.background='linear-gradient(90deg,var(--ok),var(--gold))';
+  timerInterval=setInterval(()=>{
+    timerLeft--;
+    const pct=(timerLeft/sec)*100;
+    tnum.textContent=timerLeft+'s';
+    tbar.style.width=pct+'%';
+    const col=timerLeft>18?'var(--ok)':timerLeft>9?'var(--gold)':'var(--err)';
+    tnum.style.color=col;tbar.style.background=`linear-gradient(90deg,${col},var(--gold))`;
+    if(timerLeft<=0){clearInterval(timerInterval);submitAnswer(-1,q,true);}
+  },1000);
+}
+
+// ─── SUBMIT ANSWER ────────────────────────────────────────────────────────────
+function submitAnswer(idx,q,timeout=false){
+  if(answered)return;
+  answered=true;
+  if(timerInterval)clearInterval(timerInterval);
+  const isVote=q.type==='vote';
+  const correct=isVote||timeout?false:(idx===(q.ans??q.answer));
+  const bonus=(!isVote&&!timeout&&timerLeft>20)?5:0;
+  const pts=isVote?5:correct?(q.pts||q.points)+bonus:0;
+  myScore+=pts;
+  document.getElementById('d-score').innerHTML=fmtScore(myScore);
+  const fb=document.getElementById('q-fb');
+  fb.style.display='block';
+  if(isVote){fb.style.color='var(--gold)';fb.textContent='💬 +5 pts — à discuter dans le groupe !';}
+  else if(timeout){fb.style.color='var(--err)';fb.textContent='⏰ Temps écoulé !';shakeScreen();}
+  else if(correct){fb.style.color='var(--ok)';fb.textContent=`🎉 Bravo ! +${pts} pts${bonus?' (⚡ bonus rapidité !)':''}`;setTimeout(launchConfetti,150);}
+  else{fb.style.color='var(--err)';fb.textContent=`❌ Raté ! Réponse : ${(q.opts||[])[q.ans??q.answer]||''}`;shakeScreen();}
+  if(!isVote){
+    (q.opts||[]).forEach((_,i)=>{
+      const b=document.getElementById('ans-'+i);if(!b)return;
+      b.disabled=true;
+      const ci=q.ans??q.answer;
+      if(i===ci){b.classList.add('correct');b.querySelector('.ans-letter').classList.add('ok');}
+      else if(i===idx){b.classList.add('wrong');b.querySelector('.ans-letter').classList.add('err');}
+      else b.classList.add('faded');
+    });
+  }
+  update(ref(db,`games/${gameId}`),{
+    [`answers/${myCar.id}`]:{idx,pts,correct,ts:Date.now()},
+    [`scores/${myCar.id}`]:myScore,
+  });
+  // Afficher bouton Valider apres reponse
+  setTimeout(()=>{ document.getElementById("q-validate-btn").style.display="block"; }, 1500);
+  listenAnswers();
+  setTimeout(()=>{
+    get(ref(db,`games/${gameId}/answers`)).then(snap=>{
+      const ans=snap.val()||{};
+      if(Object.keys(ans).length>0&&!ans._revealed){
+        get(ref(db,`games/${gameId}/scores`)).then(ss=>showReveal(currentQ,ans,ss.val()||{}));
+      }
+    });
+  },35000);
+}
+
+function renderWho(answers){
+  document.getElementById('q-who').innerHTML=CARS.map(c=>{
+    const a=answers[c.id];
+    return`<div style="display:flex;align-items:center;gap:4px;background:${a?'rgba(82,199,122,.15)':'var(--card)'};border:1px solid ${a?'var(--ok)':'var(--border)'};border-radius:99px;padding:4px 10px;font-size:.75rem;font-weight:800;transition:all .3s;">
+      <span>${c.emoji}</span><span style="color:${a?'var(--ok)':'var(--muted)'};">${a?'✓':c.name.split(' ')[1]}</span>
+    </div>`;
+  }).join('');
+}
+
+// ─── REVEAL ───────────────────────────────────────────────────────────────────
+function showReveal(q,answers,scores){
+  if(document.getElementById('s-reveal').classList.contains('active'))return;
+  const isVote=q.type==='vote';
+  const correctIdx=q.ans??q.answer;
+  document.getElementById('rv-title').textContent=q._zoneName||'Question';
+  document.getElementById('rv-answer').innerHTML=isVote
+    ?`<div style="color:var(--gold);font-weight:800;">💬 Question de groupe — +5 pts pour tout le monde !</div>`
+    :`<div style="color:var(--muted);font-size:.72rem;font-weight:800;letter-spacing:1px;margin-bottom:6px;">BONNE RÉPONSE</div><div style="color:var(--ok);font-weight:800;font-size:1rem;">✓ ${(q.opts||[])[correctIdx]||''}</div>`;
+  document.getElementById('rv-cars').innerHTML=CARS.map((c,i)=>{
+    const a=answers[c.id];
+    return`<div class="player-row" style="animation:slide-up .3s ${i*.08}s ease both;">
+      <div style="display:flex;align-items:center;gap:9px;"><span style="font-size:1.3rem">${c.emoji}</span><span style="font-weight:700;font-size:.87rem;">${c.id===myCar.id?myNick:c.name}</span></div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="font-size:.75rem;color:${a?(a.correct?'var(--ok)':'var(--err)'):'var(--muted)'};">${a?(a.correct?'✓ Correct':'✗ Raté'):'—'}</span>
+        <span style="font-weight:900;color:${a&&a.pts>0?'var(--ok)':'var(--muted)'};font-size:.88rem;">+${a?a.pts:0} pts</span>
+      </div>
+    </div>`;
+  }).join('');
+  const ranked=CARS.map(c=>({...c,total:scores[c.id]||0,nick:c.id===myCar.id?myNick:c.name})).sort((a,b)=>b.total-a.total);
+  document.getElementById('rv-rank').innerHTML=ranked.map((p,i)=>`
+    <div class="player-row" style="animation:slide-up .3s ${(i+4)*.08}s ease both;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="rank-medal" style="background:${['rgba(255,215,0,.2)','rgba(192,192,192,.2)','rgba(205,127,50,.2)','rgba(106,141,176,.15)'][i]};color:${['#ffd700','#c0c0c0','#cd7f32','var(--muted)'][i]};">${MEDALS[i]}</div>
+        <span style="font-size:1.2rem">${p.emoji}</span>
+        <span style="font-weight:800;font-size:.87rem;${p.id===myCar.id?'color:var(--gold)':''}">${p.nick}${p.id===myCar.id?' (moi)':''}</span>
+      </div>
+      <span style="font-weight:900;color:${i===0?'var(--gold)':'var(--snow)'};">${p.total}<span style="font-size:.7rem;color:var(--muted);"> pts</span></span>
+    </div>`).join('');
+  const cont=document.getElementById('rv-continue');
+  const wait=document.getElementById('rv-wait');
+  cont.style.display='none';wait.style.display='block';
+  setTimeout(()=>{cont.style.display='block';wait.style.display='none';},3000);
+  screen('s-reveal');
+}
+
+window.continueDriving=function(){
+  const zones=DAYS[currentDay].zones;
+  const allDone=zones.every(z=>completedIds.has(z.id));
+  update(ref(db,`games/${gameId}`),{state:'driving',currentQuestion:null,answers:{}});
+  answered=false;
+  if(allDone){currentDay===1?showDayEnd():showFinalEnd();return;}
+  screen('s-drive');renderRoute();scheduleJoker();
+};
+
+// ─── JOKER SCHEDULER ──────────────────────────────────────────────────────────
+function scheduleJoker(){
+  if(jokerTimeout)clearTimeout(jokerTimeout);
+  const delay=(18+Math.floor(Math.random()*20))*60*1000;
+  jokerTimeout=setTimeout(()=>{
+    if(document.getElementById('s-drive').classList.contains('active')){
+      toast('🃏 Question Joker en approche !',2000);
+      setTimeout(triggerJokerInternal,2200);
+    }
+  },delay);
+}
+
+// ─── DAY END / FINAL ──────────────────────────────────────────────────────────
+function showDayEnd(){
+  get(ref(db,`games/${gameId}/scores`)).then(snap=>renderDayEnd(snap.val()||{}));
+}
+function renderDayEnd(scores){
+  const ranked=CARS.map(c=>({...c,total:scores[c.id]||0,nick:c.id===myCar.id?myNick:c.name})).sort((a,b)=>b.total-a.total);
+  const leader=ranked[0];
+  renderAnimatedPodium(ranked, 'de-podium');
+  document.getElementById('de-rank').innerHTML=ranked.map((p,i)=>`<div class="player-row"><div style="display:flex;align-items:center;gap:9px;"><div class="rank-medal" style="background:${['rgba(255,215,0,.2)','rgba(192,192,192,.2)','rgba(205,127,50,.2)','rgba(106,141,176,.15)'][i]};color:${['#ffd700','#c0c0c0','#cd7f32','var(--muted)'][i]};">${MEDALS[i]}</div><span>${p.emoji}</span><span style="font-weight:800;${p.id===myCar.id?'color:var(--gold)':''}">${p.nick}</span></div><span style="font-weight:900;color:${i===0?'var(--gold)':'var(--snow)'};">${p.total}<span style="font-size:.7rem;color:var(--muted);"> pts</span></span></div>`).join('');
+  screen('s-dayend');
+}
+
+function showFinalEndWithFireworks(){
+  screen('s-end');
+  launchFireworks(6000);
+  get(ref(db,`games/${gameId}/scores`)).then(snap=>renderFinalEnd(snap.val()||{}));
+}
+function showFinalEnd(){
+  get(ref(db,`games/${gameId}/scores`)).then(snap=>renderFinalEnd(snap.val()||{}));
+}
+function renderFinalEnd(scores){
+  const ranked=CARS.map(c=>({...c,total:scores[c.id]||0,nick:c.id===myCar.id?myNick:c.name})).sort((a,b)=>b.total-a.total);
+  const leader=ranked[0];
+  const grade=leader.total>=150?'🏆 Génie absolu du road trip !':leader.total>=100?'⛷️ Champion du quiz alpin !':leader.total>=60?'🎿 Excellent voyageur !':'☃️ On repart l\'an prochain !';
+  renderAnimatedPodium(ranked, 'end-podium');
+  document.getElementById('end-podium').innerHTML+=`<div style="text-align:center;margin-top:10px;"><div style="color:var(--snow);font-weight:700;font-size:.95rem;animation:fu .5s 1.5s ease both;">${grade}</div></div>`;
+  document.getElementById('end-rank').innerHTML=ranked.map((p,i)=>`<div class="player-row"><div style="display:flex;align-items:center;gap:9px;"><div class="rank-medal" style="background:${['rgba(255,215,0,.2)','rgba(192,192,192,.2)','rgba(205,127,50,.2)','rgba(106,141,176,.15)'][i]};color:${['#ffd700','#c0c0c0','#cd7f32','var(--muted)'][i]};">${MEDALS[i]}</div><span>${p.emoji}</span><span style="font-weight:800;${p.id===myCar.id?'color:var(--gold)':''}">${p.nick}</span></div><span style="font-weight:900;color:${i===0?'var(--gold)':'var(--snow)'};">${p.total}<span style="font-size:.7rem;color:var(--muted);"> pts</span></span></div>`).join('');
+  screen('s-end');
+}
+
+window.goToLobby=function(){
+  completedIds=new Set();myScore=0;answered=false;
+  screen('s-lobby');
+};
+
+// ─── SCOREBOARD ───────────────────────────────────────────────────────────────
+window.openSB=function(){
+  get(ref(db,`games/${gameId}/scores`)).then(snap=>{
+    const s=snap.val()||{};
+    const ranked=CARS.map(c=>({...c,total:s[c.id]||0,nick:c.id===myCar.id?myNick:c.name})).sort((a,b)=>b.total-a.total);
+    document.getElementById('sb-list').innerHTML=ranked.map((p,i)=>`
+      <div style="background:${p.id===myCar.id?'rgba(240,192,64,.08)':'var(--card)'};border:1px solid ${p.id===myCar.id?'rgba(240,192,64,.3)':'var(--border)'};border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;animation:slide-up .3s ${i*.09}s ease both;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:1.5rem;color:${['#ffd700','#c0c0c0','#cd7f32','var(--muted)'][i]};">${MEDALS[i]}</div>
+          <span style="font-size:1.4rem;">${p.emoji}</span>
+          <div><div style="font-weight:800;${p.id===myCar.id?'color:var(--gold)':''}">${p.nick}</div><div style="font-size:.7rem;color:var(--muted);">${p.name}</div></div>
+        </div>
+        <div style="font-size:1.8rem;font-weight:900;color:${i===0?'var(--gold)':'var(--snow)'};">${p.total}<span style="font-size:.8rem;color:var(--muted);"> pts</span></div>
+      </div>`).join('');
+    document.getElementById('sb-overlay').classList.add('open');
+  });
+};
+window.closeSB=function(){document.getElementById('sb-overlay').classList.remove('open');};
+
+
+// ═══════════════════════════════════════════════════════════
+// ANIMATIONS SPECTACULAIRES
+// ═══════════════════════════════════════════════════════════
+
+// ── CONFETTI ──────────────────────────────────────────────
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const colors=['#f0c040','#52c77a','#5ba4e6','#e85454','#a78bfa','#ff8c42','#fff'];
+  const pieces=[];
+  for(let i=0;i<180;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:-20-Math.random()*200,
+      w:8+Math.random()*10,
+      h:5+Math.random()*8,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      rot:Math.random()*360,
+      rotSpeed:(Math.random()-0.5)*8,
+      vy:4+Math.random()*6,
+      vx:(Math.random()-0.5)*4,
+      alpha:1,
+    });
+  }
+  let frame=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.y+=p.vy; p.x+=p.vx; p.rot+=p.rotSpeed;
+      if(frame>90)p.alpha=Math.max(0,p.alpha-0.015);
+      ctx.save();
+      ctx.globalAlpha=p.alpha;
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    frame++;
+    if(frame<160) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+  // Flash vert
+  document.body.style.animation='flash-green .6s ease';
+  setTimeout(()=>document.body.style.animation='',600);
+}
+
+// ── SCREEN SHAKE ─────────────────────────────────────────
+function shakeScreen(){
+  const active=document.querySelector('.screen.active');
+  if(active){
+    // Force reflow pour que l'animation se relance même si déjà jouée
+    active.style.animation='none';
+    void active.offsetWidth; // reflow
+    active.style.animation='shake-screen .65s ease';
+    setTimeout(()=>{ active.style.animation=''; }, 700);
+  }
+  // Flash rouge sur le body
+  document.body.style.animation='none';
+  void document.body.offsetWidth;
+  document.body.style.animation='flash-red .5s ease';
+  setTimeout(()=>{ document.body.style.animation=''; }, 520);
+}
+
+// ── FIREWORKS ────────────────────────────────────────────
+function launchFireworks(duration=5000){
+  const canvas=document.getElementById('fireworks-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const particles=[];
+  function explode(x,y){
+    const colors=['#f0c040','#52c77a','#5ba4e6','#e85454','#a78bfa','#ff8c42','#fff','#ff69b4'];
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    for(let i=0;i<60;i++){
+      const angle=(i/60)*Math.PI*2;
+      const speed=2+Math.random()*5;
+      particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,col,alpha:1,size:2+Math.random()*3,trail:[]});
+    }
+  }
+  let launchTimer=setInterval(()=>{
+    const x=100+Math.random()*(canvas.width-200);
+    const y=50+Math.random()*(canvas.height/2);
+    explode(x,y);
+  },400);
+  setTimeout(()=>clearInterval(launchTimer),duration-500);
+  function draw(){
+    ctx.fillStyle='rgba(6,17,30,0.18)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,i)=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.08;
+      p.vx*=0.98; p.vy*=0.98;
+      p.alpha-=0.015;
+      if(p.alpha<=0){particles.splice(i,1);return;}
+      ctx.save();
+      ctx.globalAlpha=p.alpha;
+      ctx.fillStyle=p.col;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    });
+    if(Date.now()<endTime) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  const endTime=Date.now()+duration;
+  // Initial burst
+  for(let i=0;i<5;i++) setTimeout(()=>explode(100+Math.random()*(canvas.width-200), 80+Math.random()*200), i*120);
+  draw();
+}
+
+
+// ── CHAMBÉRY OVERLAY ─────────────────────────────────────
+function showChambereyOverlay(){
+  // Étoiles animées
+  const container=document.getElementById('chambery-stars-container');
+  container.innerHTML='';
+  for(let i=0;i<12;i++){
+    const star=document.createElement('div');
+    star.textContent='⭐';
+    star.style.cssText=`position:absolute;font-size:${1.5+Math.random()}rem;left:${Math.random()*90}%;top:${Math.random()*80}%;animation:chambery-star ${1+Math.random()}s ease-out ${i*0.15}s both;`;
+    container.appendChild(star);
+  }
+  document.getElementById('chambery-overlay').classList.add('show');
+}
+window.closeChambereyOverlay=function(){
+  document.getElementById('chambery-overlay').classList.remove('show');
+  showDayEnd();
+};
+
+// ── ANIMATED PODIUM RENDER ────────────────────────────────
+function renderAnimatedPodium(ranked, containerId){
+  const el=document.getElementById(containerId);
+  // Top 3 podium visuel
+  const order=[1,0,2]; // silver, gold, bronze display order
+  const heights=['55px','80px','42px'];
+  const delays=['0.4s','0.1s','0.7s'];
+  const bgColors=['rgba(192,192,192,.25)','rgba(255,215,0,.25)','rgba(205,127,50,.25)'];
+  const borderColors=['#c0c0c0','#ffd700','#cd7f32'];
+  
+  let podiumHTML = `<div style="display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:16px;height:130px;">`;
+  order.forEach((rank,pos)=>{
+    const p=ranked[rank];
+    if(!p)return;
+    podiumHTML+=`
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;animation:medal-drop .6s cubic-bezier(.34,1.56,.64,1) ${delays[pos]} both;">
+        <div style="font-size:${pos===1?'2.5rem':'1.8rem'};animation:${pos===1?'winner-bounce 1s ease .8s 3':'none'}">${p.emoji}</div>
+        <div style="font-size:.72rem;font-weight:800;color:${borderColors[rank]};max-width:70px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.nick}</div>
+        <div style="width:${pos===1?'90px':'72px'};height:${heights[pos]};background:${bgColors[rank]};border:2px solid ${borderColors[rank]};border-radius:8px 8px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:podium-rise .5s ease ${delays[pos]} both;">
+          <div style="font-size:1.4rem;">${MEDALS[rank]}</div>
+          <div style="font-size:.82rem;font-weight:900;color:${borderColors[rank]};">${p.total}</div>
+        </div>
+      </div>`;
+  });
+  podiumHTML+=`</div>`;
+  
+  // 4th place
+  if(ranked[3]){
+    podiumHTML+=`<div style="text-align:center;font-size:.8rem;color:var(--muted);animation:fu .5s 1.2s ease both;">
+      4️⃣ ${ranked[3].nick} — ${ranked[3].total} pts
+    </div>`;
+  }
+  el.innerHTML=podiumHTML;
+}
+
+</script>
+</body>
+</html>
+
 .serif{font-family:'Libre Baskerville',serif;}
 
 @keyframes tw{from{opacity:.04}to{opacity:.5}}
