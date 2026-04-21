@@ -21,13 +21,13 @@
   /* --- TEXTES -------------------------------------------------- */
   --theme-text:          #0d1f35;        /* texte principal                    */
   --theme-text-soft:     #2a4a6b;        /* texte secondaire                   */
-  --theme-text-muted:    #0d1f35;        /* texte discret / labels             */
+  --theme-text-muted:    #5a7a9a;        /* texte discret / labels             */
 
   /* --- TITRES (serif) ----------------------------------------- */
   --theme-title:         #0d1f35;        /* couleur des titres h1/h2           */
 
   /* --- COULEUR PRINCIPALE (boutons, accents) ------------------- */
-  --theme-primary:       #E61CED;        /* bouton principal / or              */
+  --theme-primary:       #e07000;        /* bouton principal / or              */
   --theme-primary-text:  #ffffff;        /* texte sur bouton principal         */
 
   /* --- COULEUR SECONDAIRE (liens, icônes) ---------------------- */
@@ -68,8 +68,8 @@
 
   /* --- ÉCRAN ROUTE -------------------------------------------- */
   --theme-zone-done:     #0a7a40;        /* zone complétée (vert)              */
-  --theme-zone-next:     #FA02A3;        /* prochaine zone (Rose)            */
-  --theme-zone-pending:  #691CED;        /* zones à venir (bleu foncé)               */
+  --theme-zone-next:     #e07000;        /* prochaine zone (orange)            */
+  --theme-zone-pending:  #5a7a9a;        /* zones à venir (gris)               */
   --theme-gps-active-bg: rgba(10,122,64,0.12); /* fond bouton GPS actif        */
   --theme-gps-active-txt:#0a7a40;        /* texte bouton GPS actif             */
 
@@ -79,11 +79,6 @@
   --theme-rank-1-bg:     rgba(212,160,0,0.18);  /* fond ligne 1ère place      */
   --theme-rank-2-bg:     rgba(136,136,136,0.15);/* fond ligne 2ème place      */
   --theme-rank-3-bg:     rgba(160,82,10,0.15);  /* fond ligne 3ème place      */
-
-  /* --- Taille des étapes -------------------------------------- */
-  --theme-zone-name-size:    1.5rem;    /* taille police nom des villes   */
-  --theme-zone-sub-size:     1.2rem;  /* taille police sous-titre étape */
-   
 }
 /* ╚═══════════════════════════════════════════════════════════════╝ */
 
@@ -162,7 +157,7 @@ button { cursor:pointer; border:none; outline:none; }
 .pbar-fill { height:100%; border-radius:99px; transition:width .7s ease; }
 
 /* ── Labels & tags ── */
-.sec { font-size:1.2rem; color:var(--theme-text-muted); font-weight:800; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:10px; }
+.sec { font-size:.7rem; color:var(--theme-text-muted); font-weight:800; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:10px; }
 .tag { display:inline-flex; align-items:center; gap:6px; background:var(--theme-card); border:1px solid var(--theme-border); border-radius:99px; padding:5px 14px; font-size:.72rem; font-weight:800; color:var(--theme-text-muted); text-transform:uppercase; letter-spacing:.8px; }
 
 /* ── Boutons réponse ── */
@@ -250,7 +245,7 @@ button { cursor:pointer; border:none; outline:none; }
   <div style="text-align:center;margin-bottom:24px;">
     <div style="font-size:52px;margin-bottom:8px;">🏔️</div>
     <h1 class="serif" style="font-size:1.85rem;color:#12243a;line-height:1.2;margin-bottom:6px;">Road Trip Quiz</h1>
-    <p style="color:var(--theme-text-muted);font-size:1.1rem;">Sprimont → Chambéry → La Rosière</p>
+    <p style="color:var(--theme-text-muted);font-size:.82rem;">Sprimont → Chambéry → La Rosière</p>
   </div>
 
   <div class="sec">Votre véhicule</div>
@@ -260,8 +255,7 @@ button { cursor:pointer; border:none; outline:none; }
 
   <div class="sec">Code de partie (identique pour les 4 équipes)</div>
   <div style="display:flex;gap:8px;margin-bottom:16px;">
-    <input id="i-gid" placeholder="ex: SKI2025" maxlength="8" oninput="this.value=this.value.toUpperCase()" style="flex:1;padding:11px 13px;border-radius:10px;background:var(--theme-card);border:1px solid var(--theme-border);color:#12243a;font-size:1.1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;"/>
-    <button onclick="genId()" style="padding:0 14px;border-radius:10px;background:var(--theme-card2);border:1px solid var(--theme-border);color:var(--theme-text-muted);font-size:.8rem;font-weight:800;">🎲</button>
+    <input id="i-gid" placeholder="ex: SKI2027" value="SKI2027" maxlength="8" oninput="this.value=this.value.toUpperCase()" style="flex:1;padding:11px 13px;border-radius:10px;background:var(--theme-card);border:1px solid var(--theme-border);color:#12243a;font-size:1.1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;"/>
   </div>
 
   <div class="card" style="margin-bottom:18px;font-size:.78rem;color:var(--theme-text-muted);line-height:1.7;">
@@ -294,10 +288,10 @@ button { cursor:pointer; border:none; outline:none; }
 
   <div class="sec">Quel jour sommes-nous ?</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;">
-    <button id="btn-j1" onclick="setDay(1)" style="padding:13px 8px;border-radius:12px;background:rgba(91,164,230,.18);border:2px solid var(--blue);color:var(--theme-secondary);font-weight:900;font-size:.88rem;line-height:1.5;">
+    <button id="btn-j1" onclick="setDay(1)" style="padding:13px 8px;border-radius:12px;background:#ffb3d9;border:2px solid #e91e8c;color:#8b0057;font-weight:900;font-size:.88rem;line-height:1.5;">
       📅 Jour 1<br/><span style="font-size:.7rem;font-weight:600;opacity:.8;">Sprimont → Chambéry</span>
     </button>
-    <button id="btn-j2" onclick="setDay(2)" style="padding:13px 8px;border-radius:12px;background:var(--theme-card);border:2px solid var(--theme-border);color:var(--theme-text-muted);font-weight:900;font-size:.88rem;line-height:1.5;">
+    <button id="btn-j2" onclick="setDay(2)" style="padding:13px 8px;border-radius:12px;background:#ffb3d9;border:2px solid #e91e8c;color:#8b0057;font-weight:900;font-size:.88rem;line-height:1.5;">
       📅 Jour 2<br/><span style="font-size:.7rem;font-weight:600;opacity:.8;">Chambéry → La Rosière</span>
     </button>
   </div>
@@ -576,10 +570,10 @@ const JOKERS = [
 ];
 
 const CARS=[
-{id:"car1", name:"Team 1", emoji:"🚙", color:"#ff6eb4"},  // rose vif
-{id:"car2", name:"Team 2", emoji:"🚗", color:"#ff9a3c"},  // orange
-{id:"car3", name:"Team 3", emoji:"🚕", color:"#a855f7"},  // violet
-{id:"car4", name:"Team 4", emoji:"🚐", color:"#22d3ee"},  // cyan
+  {id:"car1",name:"Team 1",emoji:"🚙",color:"#5ba4e6"},
+  {id:"car2",name:"Team 2",emoji:"🚗",color:"#f0c040"},
+  {id:"car3",name:"Team 3",emoji:"🚕",color:"#e85454"},
+  {id:"car4",name:"Team 4",emoji:"🚐",color:"#52c77a"},
 ];
 const DIFF_LBL=["","⭐ Facile","⭐⭐ Moyen","⭐⭐⭐ Difficile"];
 const DIFF_COL=["","var(--theme-diff-easy)","var(--theme-diff-medium)","var(--theme-diff-hard)"];
@@ -732,8 +726,8 @@ function renderLobbyPlayers(players){
       <div style="display:flex;align-items:center;gap:9px;">
         <span style="font-size:1.4rem">${c.emoji}</span>
         <div>
-          <div style="font-weight:800;font-size:1.2rem;color:${p?'var(--theme-text)':'var(--theme-text-muted)'};">${p?p.name:c.name}</div>
-          <div style="font-size:1.1rem;color:var(--theme-text-muted);">${c.name}</div>
+          <div style="font-weight:800;font-size:.88rem;color:${p?'var(--theme-text)':'var(--theme-text-muted)'};">${p?p.name:c.name}</div>
+          <div style="font-size:.7rem;color:var(--theme-text-muted);">${c.name}</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:6px;">
@@ -748,8 +742,9 @@ function renderLobbyPlayers(players){
 
 window.setDay=function(d){
   selectedDay=d;
-  document.getElementById('btn-j1').style.cssText=`padding:13px 8px;border-radius:12px;font-weight:900;font-size:.88rem;line-height:1.5;background:${d===1?'rgba(91,164,230,.22)':'var(--card)'};border:2px solid ${d===1?'var(--theme-secondary)':'var(--theme-border)'};color:${d===1?'var(--theme-secondary)':'var(--theme-text-muted)'};`;
-  document.getElementById('btn-j2').style.cssText=`padding:13px 8px;border-radius:12px;font-weight:900;font-size:.88rem;line-height:1.5;background:${d===2?'rgba(91,164,230,.22)':'var(--card)'};border:2px solid ${d===2?'var(--theme-secondary)':'var(--theme-border)'};color:${d===2?'var(--theme-secondary)':'var(--theme-text-muted)'};`;
+  const BASE='padding:13px 8px;border-radius:12px;font-weight:900;font-size:.88rem;line-height:1.5;border:2px solid #e91e8c;';
+  document.getElementById('btn-j1').style.cssText=BASE+`background:${d===1?'#e91e8c':'#ffb3d9'};color:${d===1?'#fff':'#8b0057'};`;
+  document.getElementById('btn-j2').style.cssText=BASE+`background:${d===2?'#e91e8c':'#ffb3d9'};color:${d===2?'#fff':'#8b0057'};`;
 };
 setDay(1);
 
@@ -791,8 +786,8 @@ function renderRoute(){
       </div>
       <div style="padding-top:5px;opacity:${done?.6:isNext?1:.4};flex:1;display:flex;justify-content:space-between;">
         <div>
-          <div style="font-weight:800;font-size:1.5rem;color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'var(--theme-text)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
-          <div style="font-size:1.2rem;color:var(--theme-text-muted);">${z.theme}</div>
+          <div style="font-weight:800;font-size:.87rem;color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'var(--theme-text)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
+          <div style="font-size:.68rem;color:var(--theme-text-muted);">${z.theme}</div>
         </div>
       </div>
     </div>`;
@@ -1097,6 +1092,9 @@ function renderFinalEnd(scores){
 
 window.goToLobby=function(){
   completedIds=new Set();myScore=0;answered=false;
+  // Présélectionner automatiquement Jour 2
+  selectedDay=2;
+  setDay(2);
   screen('s-lobby');
 };
 
