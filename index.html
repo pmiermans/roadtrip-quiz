@@ -10,7 +10,7 @@
 <style>
 
 /* ╔═══════════════════════════════════════════════════════════════╗
-   ║  🎨 THÈME — MODIFIEZ UNIQUEMENT CE BLOC POUR TOUT CHANGER   ║
+   ║  🎨 THÈME — MODIFIEZ UNIQUEMENT CE BLOC POUR TOUT CHANGER    ║
    ╚═══════════════════════════════════════════════════════════════╝ */
 :root {
 
@@ -67,9 +67,9 @@
   --theme-feedback-err:  #bf1e1e;        /* texte "Raté !" mauvaise réponse    */
 
   /* --- ÉCRAN ROUTE -------------------------------------------- */
-  --theme-zone-done:     #0a7a40;        /* zone complétée (vert)              */
-  --theme-zone-next:     #e07000;        /* prochaine zone (orange)            */
-  --theme-zone-pending:  #5a7a9a;        /* zones à venir (gris)               */
+  --theme-zone-done:     #e91e8c;        /* zone complétée (rose foncé)        */
+  --theme-zone-next:     #e91e8c;        /* prochaine zone (rose foncé)        */
+  --theme-zone-pending:  #1558a0;        /* zones à venir (bleu foncé)         */
   --theme-gps-active-bg: rgba(10,122,64,0.12); /* fond bouton GPS actif        */
   --theme-gps-active-txt:#0a7a40;        /* texte bouton GPS actif             */
 
@@ -157,7 +157,7 @@ button { cursor:pointer; border:none; outline:none; }
 .pbar-fill { height:100%; border-radius:99px; transition:width .7s ease; }
 
 /* ── Labels & tags ── */
-.sec { font-size:1.4rem; color:var(--theme-text-muted); font-weight:900; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:12px; }
+.sec { font-size:1.6rem; color:var(--theme-text-muted); font-weight:900; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:12px; }
 .tag { display:inline-flex; align-items:center; gap:6px; background:var(--theme-card); border:1px solid var(--theme-border); border-radius:99px; padding:5px 14px; font-size:.72rem; font-weight:800; color:var(--theme-text-muted); text-transform:uppercase; letter-spacing:.8px; }
 
 /* ── Boutons réponse ── */
@@ -521,7 +521,7 @@ const DAYS = {
         {q:"Les 'Éléphants' de Chambéry (sa fontaine emblématique) viennent de...",opts:["L'Inde — ramenés par un général savoyard","D'Égypte via Napoléon","D'une légende celtique alpine"],ans:0,pts:15,dif:3},
        ]},
     ]},
-  2:{from:"Chambéry",fromEmoji:"⛰️",to:"La Rosière",toEmoji:"🎿",
+  2:{from:"Chambéry",fromEmoji:"⛰️",to:"La Rosière",toEmoji:"🏁",
     zones:[
       {id:10,name:"Albertville",emoji:"🏅",lat:45.675,lng:6.393,radius:9000,theme:"JO 1992",
        qs:[
@@ -541,7 +541,7 @@ const DAYS = {
         {q:"Le col du Petit Saint-Bernard (proche de La Rosière) culmine à...",opts:["1 850 m","2 188 m","2 764 m"],ans:1,pts:10,dif:2},
         {q:"Les Arcs, proche de Bourg-Saint-Maurice, est relié à quelle station italienne ?",opts:["La Thuile","Pila","Sestrières"],ans:0,pts:15,dif:3},
        ]},
-      {id:13,name:"La Rosière",emoji:"🎿",lat:45.632,lng:6.858,radius:5000,theme:"ARRIVÉE ! 🏆",
+      {id:13,name:"La Rosière",emoji:"🏁",lat:45.632,lng:6.858,radius:5000,theme:"ARRIVÉE ! 🏆",
        qs:[
         {q:"La Rosière est reliée à quelle station italienne ?",opts:["Courmayeur","La Thuile","Cervinia"],ans:1,pts:10,dif:1},
         {q:"À quelle altitude se trouve La Rosière ?",opts:["1 200 m","1 850 m","2 200 m"],ans:1,pts:10,dif:1},
@@ -788,15 +788,15 @@ function renderRoute(){
     const isNext=i===zones.findIndex(x=>!completedIds.has(x.id));
     return`<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:7px;">
       <div style="display:flex;flex-direction:column;align-items:center;min-width:48px;">
-        <div style="width:44px;height:44px;border-radius:50%;background:${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--card)'};border:2px solid ${done?'var(--theme-ok)':isNext?'var(--theme-primary)':'var(--theme-border)'};display:flex;align-items:center;justify-content:center;font-size:${done?'1.2rem':'1.5rem'};color:${done||isNext?'var(--theme-bg-color)':'var(--theme-text-muted)'};font-weight:900;${isNext?'animation:pu 2s infinite':''};">
+        <div style="width:44px;height:44px;border-radius:50%;background:${done?'var(--theme-zone-done)':isNext?'var(--theme-zone-next)':'var(--theme-card)'};border:2px solid ${done?'var(--theme-zone-done)':isNext?'var(--theme-zone-next)':'var(--theme-border)'};display:flex;align-items:center;justify-content:center;font-size:${done?'1.2rem':'1.5rem'};color:${done||isNext?'#ffffff':'#1558a0'};font-weight:900;${isNext?'animation:pu 2s infinite':''};">
           ${done?'✓':z.emoji}
         </div>
         ${i<zones.length-1?`<div style="width:2px;height:28px;background:${done?'rgba(82,199,122,.4)':'var(--theme-border)'};margin-top:2px;"></div>`:''}
       </div>
-      <div style="padding-top:5px;opacity:${done?.6:isNext?1:.4};flex:1;display:flex;justify-content:space-between;">
+      <div style="padding-top:5px;opacity:${isNext?1:1};flex:1;display:flex;justify-content:space-between;">
         <div>
-          <div style="font-weight:800;font-size:1.4rem;color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'var(--theme-text)'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
-          <div style="font-size:1.1rem;color:var(--theme-text-muted);font-weight:600;">${z.theme}</div>
+          <div style="font-weight:800;font-size:1.6rem;font-weight:${isNext||done?'900':'700'};color:${isNext?'var(--theme-zone-next)':done?'var(--theme-zone-done)':'#1558a0'};">${z.name}${isNext?`<span style="font-size:.6rem;color:var(--theme-primary);margin-left:5px;">PROCHAINE ›</span>`:''}</div>
+          <div style="font-size:1.2rem;color:var(--theme-text-muted);font-weight:400;">${z.theme}</div>
         </div>
       </div>
     </div>`;
