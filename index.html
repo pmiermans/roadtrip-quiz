@@ -864,9 +864,15 @@ window.joinGame=function(){
   gameId=gid;
   myNick=document.getElementById('i-nick').value.trim()||myCar.name;
   const playerData={name:myNick,emoji:myCar.emoji,color:myCar.color,score:0,online:true};
-  update(ref(db,`games/${gameId}/players/${myCar.id}`),playerData)
-    .then(()=>{showLobby();})
-    .catch(e=>toast('❌ Erreur : '+e.message));
+  // Réinitialiser l'état Firebase pour éviter de charger une ancienne session
+  update(ref(db,`games/${gameId}`),{
+    state:'lobby',
+    currentQuestion:null,
+    answers:{}
+  }).then(()=>
+    update(ref(db,`games/${gameId}/players/${myCar.id}`),playerData)
+  ).then(()=>{showLobby();})
+  .catch(e=>toast('❌ Erreur : '+e.message));
 };
 
 function showLobby(){
@@ -881,10 +887,18 @@ function listenLobby(){
   });
   onValue(ref(db,`games/${gameId}/state`),snap=>{
     const st=snap.val();
-    if(st==='driving')beginDriving();
+    if(st==='driving') beginDriving();
     else if(st==='question'){
-      get(ref(db,`games/${gameId}/currentQuestion`)).then(qs=>{if(qs.val())showQuestion(qs.val());});
+      get(ref(db,`games/${gameId}/currentQuestion`)).then(qs=>{
+        const q=qs.val();
+        // Ignorer les questions anciennes
+        if(q&&q.q){
+          const age=Date.now()-(q.startedAt||0);
+          if(age<10*60*1000) showQuestion(q);
+        }
+      });
     }
+    // si 'lobby' ou null → on reste sur l'écran lobby
   });
 }
 
@@ -1037,7 +1051,11 @@ function pushQuestion(q){
 function listenForQuestion(){
   onValue(ref(db,`games/${gameId}/currentQuestion`),snap=>{
     const q=snap.val();
-    if(q&&q.q&&!answered)showQuestion(q);
+    // Ignorer les questions anciennes (plus de 10 minutes) = restes d'une session précédente
+    if(q&&q.q&&!answered){
+      const age = Date.now() - (q.startedAt||0);
+      if(age < 10*60*1000) showQuestion(q); // moins de 10 min = question valide
+    }
   });
   onValue(ref(db,`games/${gameId}/state`),snap=>{
     const st=snap.val();
